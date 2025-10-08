@@ -60,6 +60,10 @@ export class FlowOrchestrator extends EventEmitter {
     return this.agentManager.get(agentName);
   }
 
+  getAll(): AgentInstance[] {
+    return this.agentManager.getAll();
+  }
+
   list(): string[] {
     return this.agentManager.list();
   }

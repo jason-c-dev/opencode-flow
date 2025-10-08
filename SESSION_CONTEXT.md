@@ -33,9 +33,11 @@ Build interactive setup wizard and basic orchestration:
 - [x] FlowOrchestrator - Multi-agent coordination (`src/core/flow.ts`) ✅
 
 **Priority 3: Basic CLI**
-- [ ] `opencode-flow spawn` command
-- [ ] `opencode-flow exec` command
-- [ ] `opencode-flow list` command
+- [x] `opencode-flow spawn` command ✅
+- [x] `opencode-flow exec` command ✅
+- [x] `opencode-flow list` command ✅
+- [x] `opencode-flow terminate` command ✅
+- [x] `opencode-flow status` command ✅
 
 **Deliverable:** Zero-config setup + spawn 3+ agents, execute tasks in parallel
 
@@ -65,7 +67,14 @@ opencode-flow/
 │   └── GETTING_STARTED.md
 ├── src/                     # 🔨 Implementation goes here
 │   ├── cli/
-│   │   ├── index.ts         # ✅ Placeholder CLI entry
+│   │   ├── index.ts         # ✅ CLI entry with commander
+│   │   ├── state.ts         # ✅ CLI state management
+│   │   ├── commands/
+│   │   │   ├── spawn.ts     # ✅ Spawn command
+│   │   │   ├── exec.ts      # ✅ Execute command
+│   │   │   ├── list.ts      # ✅ List command
+│   │   │   ├── terminate.ts # ✅ Terminate command
+│   │   │   └── status.ts    # ✅ Status command
 │   │   └── setup.ts         # TODO: Setup wizard
 │   ├── core/
 │   │   ├── types.ts         # ✅ Type definitions
@@ -165,8 +174,8 @@ Context:
 - Please read: SESSION_CONTEXT.md
 
 Current task: Implement Phase 1 MVP
-Latest: FlowOrchestrator ✅ (Session 2 - Core Complete!)
-Next step: Setup Wizard OR Basic CLI commands
+Latest: Basic CLI ✅ (Session 2 - Core + CLI Complete!)
+Next step: Setup Wizard (Priority 1 - Last major piece!)
 
 What should we implement first?
 ```
@@ -197,19 +206,27 @@ What should we implement first?
 - ✅ Implemented AgentManager (`src/core/agent-manager.ts`)
 - ✅ Implemented FlowOrchestrator (`src/core/flow.ts`)
 - ✅ Implemented FileMemoryBackend (`src/core/memory.ts`)
-- ✅ Added placeholder CLI entry point
+- ✅ Implemented full CLI with 5 commands (spawn, exec, list, terminate, status)
 - ✅ All code type-checks and builds successfully
 - ✅ **Priority 2: Core Components COMPLETE!**
+- ✅ **Priority 3: Basic CLI COMPLETE!**
 
 **Files created:**
 - `src/core/client.ts` - OpenCode HTTP API wrapper with retry logic, event streaming
 - `src/core/agent-manager.ts` - Agent lifecycle management with health checks
 - `src/core/flow.ts` - Multi-agent orchestrator with parallel/sequential/hierarchical execution
 - `src/core/memory.ts` - File-based shared memory backend
-- `src/cli/index.ts` - Placeholder CLI entry
+- `src/cli/index.ts` - CLI entry with commander.js
+- `src/cli/state.ts` - CLI state management (~/.opencode-flow)
+- `src/cli/commands/spawn.ts` - Spawn agent command
+- `src/cli/commands/exec.ts` - Execute task command
+- `src/cli/commands/list.ts` - List agents command
+- `src/cli/commands/terminate.ts` - Terminate agent command
+- `src/cli/commands/status.ts` - Status check command
 
 **Files modified:**
 - `src/index.ts` - Updated exports for all core components
+- `src/core/flow.ts` - Added `getAll()` method
 - `SESSION_CONTEXT.md` - Updated progress tracking
 
 **Status:** Ready to commit and push
