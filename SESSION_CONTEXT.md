@@ -28,8 +28,8 @@ Build interactive setup wizard and basic orchestration:
 - [ ] `.env` file generation
 
 **Priority 2: Core Components**
-- [ ] FlowClient - OpenCode HTTP API wrapper (`src/core/client.ts`)
-- [ ] AgentManager - Agent lifecycle management (`src/core/agent-manager.ts`)
+- [x] FlowClient - OpenCode HTTP API wrapper (`src/core/client.ts`) ✅
+- [x] AgentManager - Agent lifecycle management (`src/core/agent-manager.ts`) ✅
 - [ ] FlowOrchestrator - Multi-agent coordination (`src/core/flow.ts`)
 
 **Priority 3: Basic CLI**
@@ -65,13 +65,13 @@ opencode-flow/
 │   └── GETTING_STARTED.md
 ├── src/                     # 🔨 Implementation goes here
 │   ├── cli/
-│   │   ├── index.ts         # Main CLI entry
-│   │   └── setup.ts         # Setup wizard (TODO)
+│   │   ├── index.ts         # ✅ Placeholder CLI entry
+│   │   └── setup.ts         # TODO: Setup wizard
 │   ├── core/
 │   │   ├── types.ts         # ✅ Type definitions
-│   │   ├── client.ts        # TODO: FlowClient
-│   │   ├── flow.ts          # TODO: FlowOrchestrator
-│   │   └── agent-manager.ts # TODO: AgentManager
+│   │   ├── client.ts        # ✅ FlowClient (COMPLETE)
+│   │   ├── agent-manager.ts # ✅ AgentManager (COMPLETE)
+│   │   └── flow.ts          # TODO: FlowOrchestrator
 │   ├── router/
 │   │   ├── optimizer.ts     # TODO: Model router
 │   │   └── providers.ts     # TODO: Provider configs
@@ -164,7 +164,8 @@ Context:
 - Please read: SESSION_CONTEXT.md
 
 Current task: Implement Phase 1 MVP
-Next step: Build interactive setup wizard (opencode-flow setup)
+Latest: FlowClient ✅ + AgentManager ✅ (Session 2)
+Next step: FlowOrchestrator OR Setup Wizard
 
 What should we implement first?
 ```
@@ -189,6 +190,22 @@ What should we implement first?
 1. `b73011a` - Initial project setup
 2. `651d112` - Rename to opencode-flow
 3. `923eb1b` - Add setup wizard and docs
+
+### Session 2 (2025-01-07)
+- ✅ Implemented FlowClient (`src/core/client.ts`)
+- ✅ Implemented AgentManager (`src/core/agent-manager.ts`)
+- ✅ Added placeholder CLI entry point
+- ✅ All code type-checks and builds successfully
+
+**Files created:**
+- `src/core/client.ts` - OpenCode HTTP API wrapper with retry logic, event streaming
+- `src/core/agent-manager.ts` - Agent lifecycle management with health checks
+- `src/cli/index.ts` - Placeholder CLI entry
+
+**Files modified:**
+- `src/index.ts` - Updated exports for FlowClient and AgentManager
+
+**Status:** Not yet committed - ready to commit and push
 
 ---
 
