@@ -30,7 +30,7 @@ Build interactive setup wizard and basic orchestration:
 **Priority 2: Core Components**
 - [x] FlowClient - OpenCode HTTP API wrapper (`src/core/client.ts`) ✅
 - [x] AgentManager - Agent lifecycle management (`src/core/agent-manager.ts`) ✅
-- [ ] FlowOrchestrator - Multi-agent coordination (`src/core/flow.ts`)
+- [x] FlowOrchestrator - Multi-agent coordination (`src/core/flow.ts`) ✅
 
 **Priority 3: Basic CLI**
 - [ ] `opencode-flow spawn` command
@@ -71,7 +71,8 @@ opencode-flow/
 │   │   ├── types.ts         # ✅ Type definitions
 │   │   ├── client.ts        # ✅ FlowClient (COMPLETE)
 │   │   ├── agent-manager.ts # ✅ AgentManager (COMPLETE)
-│   │   └── flow.ts          # TODO: FlowOrchestrator
+│   │   ├── flow.ts          # ✅ FlowOrchestrator (COMPLETE)
+│   │   └── memory.ts        # ✅ FileMemoryBackend (COMPLETE)
 │   ├── router/
 │   │   ├── optimizer.ts     # TODO: Model router
 │   │   └── providers.ts     # TODO: Provider configs
@@ -164,8 +165,8 @@ Context:
 - Please read: SESSION_CONTEXT.md
 
 Current task: Implement Phase 1 MVP
-Latest: FlowClient ✅ + AgentManager ✅ (Session 2)
-Next step: FlowOrchestrator OR Setup Wizard
+Latest: FlowOrchestrator ✅ (Session 2 - Core Complete!)
+Next step: Setup Wizard OR Basic CLI commands
 
 What should we implement first?
 ```
@@ -194,18 +195,24 @@ What should we implement first?
 ### Session 2 (2025-01-07)
 - ✅ Implemented FlowClient (`src/core/client.ts`)
 - ✅ Implemented AgentManager (`src/core/agent-manager.ts`)
+- ✅ Implemented FlowOrchestrator (`src/core/flow.ts`)
+- ✅ Implemented FileMemoryBackend (`src/core/memory.ts`)
 - ✅ Added placeholder CLI entry point
 - ✅ All code type-checks and builds successfully
+- ✅ **Priority 2: Core Components COMPLETE!**
 
 **Files created:**
 - `src/core/client.ts` - OpenCode HTTP API wrapper with retry logic, event streaming
 - `src/core/agent-manager.ts` - Agent lifecycle management with health checks
+- `src/core/flow.ts` - Multi-agent orchestrator with parallel/sequential/hierarchical execution
+- `src/core/memory.ts` - File-based shared memory backend
 - `src/cli/index.ts` - Placeholder CLI entry
 
 **Files modified:**
-- `src/index.ts` - Updated exports for FlowClient and AgentManager
+- `src/index.ts` - Updated exports for all core components
+- `SESSION_CONTEXT.md` - Updated progress tracking
 
-**Status:** Not yet committed - ready to commit and push
+**Status:** Ready to commit and push
 
 ---
 
