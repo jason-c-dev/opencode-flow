@@ -9,7 +9,7 @@
 - **Name:** OpenCode Flow
 - **Purpose:** Multi-agent orchestration framework built on OpenCode
 - **Repository:** https://github.com/jason-c-dev/opencode-flow
-- **Local Path:** `/Users/jason/dev/opencode-flow`
+- **Local Path:** `~/dev/opencode-flow`
 - **Status:** Planning Complete ✅ → Starting Implementation
 
 ---
@@ -160,7 +160,7 @@ I'm continuing work on OpenCode Flow.
 
 Context:
 - Repo: https://github.com/jason-c-dev/opencode-flow
-- Local: /Users/jason/dev/opencode-flow
+- Local: ~/dev/opencode-flow
 - Please read: SESSION_CONTEXT.md
 
 Current task: Implement Phase 1 MVP
@@ -213,7 +213,7 @@ What should we implement first?
 
 ```bash
 # Check status
-cd /Users/jason/dev/opencode-flow
+cd ~/dev/opencode-flow
 git status
 
 # Make changes, then:
