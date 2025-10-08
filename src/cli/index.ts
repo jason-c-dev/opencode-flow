@@ -2,6 +2,7 @@
 
 import { Command } from 'commander';
 import chalk from 'chalk';
+import { setup } from './commands/setup.js';
 import { spawn } from './commands/spawn.js';
 import { exec } from './commands/exec.js';
 import { list } from './commands/list.js';
@@ -14,6 +15,16 @@ program
   .name('opencode-flow')
   .description('Multi-agent orchestration framework built on OpenCode')
   .version('0.1.0');
+
+program
+  .command('setup')
+  .description('Interactive setup wizard for first-time configuration')
+  .option('--skip-opencode-install', 'Skip OpenCode CLI installation check')
+  .option('--skip-server-start', 'Skip starting OpenCode server')
+  .option('--port <number>', 'Custom OpenCode server port', parseInt, 4096)
+  .option('--config-path <path>', 'Custom config directory')
+  .option('--non-interactive', 'Use environment variables, no prompts')
+  .action(setup);
 
 program
   .command('spawn')
