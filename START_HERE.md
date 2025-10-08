@@ -1,19 +1,19 @@
-# 🚀 OpenCode Swarm - START HERE
+# 🚀 OpenCode Flow - START HERE
 
-**Welcome!** This document is your entry point to the OpenCode Swarm project.
+**Welcome!** This document is your entry point to the OpenCode Flow project.
 
 ---
 
 ## What is This?
 
-**OpenCode Swarm** is a multi-agent orchestration framework built on top of OpenCode's flexible agent system. It enables:
+**OpenCode Flow** is a multi-agent orchestration framework built on top of OpenCode's flexible agent system. It enables:
 
 - 🤖 **Spawning multiple specialized AI agents** programmatically
 - 💰 **Cost optimization** via intelligent model routing (85% savings)
 - 🧠 **Agent coordination** through shared memory
 - 📦 **Production deployment** (Docker, Kubernetes, local)
 
-**Think:** OpenCode's flexibility + Agentic Flow's swarm intelligence = OpenCode Swarm
+**Think:** OpenCode's flexibility + Agentic Flow's flow intelligence = OpenCode Flow
 
 ---
 
@@ -34,7 +34,7 @@
 
 ### What's Next
 
-- 📋 Implement `SwarmClient` (Week 1)
+- 📋 Implement `FlowClient` (Week 1)
 - 📋 Implement `AgentManager` (Week 1)
 - 📋 Implement basic CLI (Week 1)
 - 📋 Add model router (Week 3)
@@ -73,7 +73,7 @@
 ## 📚 Documentation Structure
 
 ```
-opencode-swarm/
+opencode-flow/
 ├── START_HERE.md                    ← You are here!
 ├── README.md                        ← Project overview
 ├── CONTRIBUTING.md                  ← How to contribute
@@ -88,18 +88,18 @@ opencode-swarm/
 │   ├── core/                       ← Core orchestration
 │   │   ├── types.ts               ✅ Type definitions
 │   │   ├── client.ts              📋 OpenCode API wrapper
-│   │   ├── swarm.ts               📋 Main orchestrator
+│   │   ├── flow.ts               📋 Main orchestrator
 │   │   └── agent-manager.ts       📋 Agent lifecycle
 │   ├── router/                     ← Model optimization
 │   │   ├── optimizer.ts           📋 Model selection
 │   │   └── providers.ts           📋 Provider configs
 │   ├── tools/                      ← MCP tools
-│   │   └── swarm-memory.ts        📋 Shared memory
+│   │   └── flow-memory.ts        📋 Shared memory
 │   ├── cli/                        ← CLI interface
 │   │   └── index.ts               📋 CLI commands
 │   └── index.ts                   ✅ Main export
 ├── tests/                          📋 Test suites
-├── examples/                       📋 Example swarms
+├── examples/                       📋 Example flows
 ├── package.json                    ✅ Dependencies
 ├── tsconfig.json                   ✅ TypeScript config
 └── tsup.config.ts                  ✅ Build config
@@ -116,11 +116,11 @@ opencode-swarm/
 ### CLI Usage
 ```bash
 # Spawn agents
-opencode-swarm spawn --name researcher --agent general --model gemini-2.5-flash
-opencode-swarm spawn --name coder --agent build --model claude-sonnet-4
+opencode-flow spawn --name researcher --agent general --model gemini-2.5-flash
+opencode-flow spawn --name coder --agent build --model claude-sonnet-4
 
 # Execute task
-opencode-swarm exec \
+opencode-flow exec \
   --task "Build REST API with auth" \
   --agents researcher,coder \
   --mode sequential \
@@ -129,18 +129,18 @@ opencode-swarm exec \
 
 ### Programmatic Usage
 ```typescript
-import { OpencodeSwarm } from 'opencode-swarm';
+import { OpencodeFlow } from 'opencode-flow';
 
-const swarm = new OpencodeSwarm({
+const flow = new OpencodeFlow({
   modelRouter: { mode: 'cost', maxCostPerTask: 0.05 }
 });
 
 // Spawn agents
-await swarm.spawn({ name: 'researcher', model: 'gemini-2.5-flash' });
-await swarm.spawn({ name: 'coder', model: 'claude-sonnet-4' });
+await flow.spawn({ name: 'researcher', model: 'gemini-2.5-flash' });
+await flow.spawn({ name: 'coder', model: 'claude-sonnet-4' });
 
 // Execute
-const results = await swarm.execute({
+const results = await flow.execute({
   task: 'Build REST API',
   agents: ['researcher', 'coder'],
   mode: 'sequential'
@@ -161,7 +161,7 @@ console.log(`Total cost: $${results.reduce((sum, r) => sum + r.cost, 0)}`);
 └─────────────────────────────────────────┘
                   ▼
 ┌─────────────────────────────────────────┐
-│       SwarmOrchestrator                 │
+│       FlowOrchestrator                 │
 │  - Spawn agents                         │
 │  - Route to optimal models              │
 │  - Execute tasks (parallel/sequential)  │
@@ -198,22 +198,22 @@ modelRouter: {
 ### 2. Multi-Agent Coordination
 ```typescript
 // Parallel
-await swarm.executeParallel('Analyze codebase', ['agent1', 'agent2', 'agent3']);
+await flow.executeParallel('Analyze codebase', ['agent1', 'agent2', 'agent3']);
 
 // Sequential (output feeds into next)
-await swarm.executeSequential('Build feature', ['research', 'code', 'test']);
+await flow.executeSequential('Build feature', ['research', 'code', 'test']);
 
 // Hierarchical (coordinator → workers)
-await swarm.executeHierarchical('Microservices', 'architect', ['dev1', 'dev2']);
+await flow.executeHierarchical('Microservices', 'architect', ['dev1', 'dev2']);
 ```
 
 ### 3. Shared Memory
 ```typescript
 // Agent 1 stores
-await swarm.memory.set('design', apiDesign);
+await flow.memory.set('design', apiDesign);
 
 // Agent 2 retrieves
-const design = await swarm.memory.get('design');
+const design = await flow.memory.get('design');
 ```
 
 ### 4. Production Ready
@@ -260,7 +260,7 @@ const design = await swarm.memory.get('design');
 - [x] Project setup
 
 ### 📋 Phase 1: MVP (Week 1-2)
-- [ ] SwarmClient
+- [ ] FlowClient
 - [ ] AgentManager
 - [ ] Basic CLI
 - [ ] Parallel execution
@@ -306,7 +306,7 @@ We'd love your help! See [CONTRIBUTING.md](./CONTRIBUTING.md) for:
 ## 🎯 Next Steps
 
 ### For Users (when released)
-1. Install: `npm install -g opencode-swarm`
+1. Install: `npm install -g opencode-flow`
 2. Follow: [docs/GETTING_STARTED.md](./docs/GETTING_STARTED.md)
 
 ### For Contributors (now!)
@@ -324,7 +324,7 @@ We'd love your help! See [CONTRIBUTING.md](./CONTRIBUTING.md) for:
 ## ⭐ Why This Matters
 
 **Problem:** OpenCode is great, but single-agent focused  
-**Solution:** Add swarm orchestration without replacing OpenCode
+**Solution:** Add flow orchestration without replacing OpenCode
 
 **Result:**
 - ✅ Multi-agent coordination

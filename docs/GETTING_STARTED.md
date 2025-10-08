@@ -1,6 +1,6 @@
-# Getting Started with OpenCode Swarm
+# Getting Started with OpenCode Flow
 
-This guide will walk you through setting up and using OpenCode Swarm for the first time.
+This guide will walk you through setting up and using OpenCode Flow for the first time.
 
 ---
 
@@ -32,14 +32,14 @@ This guide will walk you through setting up and using OpenCode Swarm for the fir
 
 ### Option 1: npm (coming soon)
 ```bash
-npm install -g opencode-swarm
+npm install -g opencode-flow
 ```
 
 ### Option 2: From source
 ```bash
 # Clone repository
-git clone https://github.com/yourusername/opencode-swarm.git
-cd opencode-swarm
+git clone https://github.com/yourusername/opencode-flow.git
+cd opencode-flow
 
 # Install dependencies
 npm install
@@ -73,7 +73,7 @@ OPENROUTER_API_KEY=sk-or-v1-...
 
 ```bash
 # Spawn a researcher agent with Gemini (fast & cheap)
-opencode-swarm spawn \
+opencode-flow spawn \
   --name researcher \
   --agent general \
   --model gemini-2.5-flash
@@ -91,7 +91,7 @@ You should see:
 
 ```bash
 # Run a simple research task
-opencode-swarm exec \
+opencode-flow exec \
   --task "Research best practices for REST API authentication" \
   --agents researcher
 ```
@@ -119,13 +119,13 @@ Here are the best practices for REST API authentication:
 
 ```bash
 # Spawn a coder agent
-opencode-swarm spawn \
+opencode-flow spawn \
   --name coder \
   --agent build \
   --model claude-sonnet-4
 
 # List active agents
-opencode-swarm list
+opencode-flow list
 ```
 
 Output:
@@ -139,7 +139,7 @@ coder         build    claude-sonnet-4    idle      def456
 
 ```bash
 # Sequential execution (research → code)
-opencode-swarm exec \
+opencode-flow exec \
   --task "Build a JWT authentication endpoint" \
   --agents researcher,coder \
   --mode sequential
@@ -154,11 +154,11 @@ The researcher's output feeds into the coder's input!
 Create `example.ts`:
 
 ```typescript
-import { OpencodeSwarm } from 'opencode-swarm';
+import { OpencodeFlow } from 'opencode-flow';
 
 async function main() {
-  // 1. Initialize swarm
-  const swarm = new OpencodeSwarm({
+  // 1. Initialize flow
+  const flow = new OpencodeFlow({
     serverUrl: 'http://localhost:4096',
     modelRouter: {
       mode: 'balanced',
@@ -167,14 +167,14 @@ async function main() {
   });
 
   // 2. Spawn agents
-  const researcher = await swarm.spawn({
+  const researcher = await flow.spawn({
     name: 'researcher',
     agent: 'general',
     model: 'gemini-2.5-flash',
     systemPrompt: 'Research AI trends and provide concise summaries'
   });
 
-  const coder = await swarm.spawn({
+  const coder = await flow.spawn({
     name: 'coder',
     agent: 'build',
     model: 'claude-sonnet-4',
@@ -182,7 +182,7 @@ async function main() {
   });
 
   // 3. Execute task
-  const results = await swarm.execute({
+  const results = await flow.execute({
     task: 'Build a REST API with JWT authentication',
     agents: ['researcher', 'coder'],
     mode: 'sequential'
@@ -197,7 +197,7 @@ async function main() {
   }
 
   // 5. Cleanup
-  await swarm.shutdown();
+  await flow.shutdown();
 }
 
 main().catch(console.error);
@@ -215,18 +215,18 @@ npx tsx example.ts
 ### Pattern 1: Cost-Optimized Code Review
 
 ```typescript
-const swarm = new OpencodeSwarm({
+const flow = new OpencodeFlow({
   modelRouter: { mode: 'cost' }  // Prioritize cheapest models
 });
 
-const reviewer = await swarm.spawn({
+const reviewer = await flow.spawn({
   name: 'reviewer',
   agent: 'plan',  // Read-only mode
   model: 'auto',  // Router selects: DeepSeek R1 (85% cheaper)
   minQuality: 80  // Ensure quality threshold
 });
 
-const results = await swarm.execute({
+const results = await flow.execute({
   task: `Review this PR:\n${prDiff}`,
   agents: ['reviewer']
 });
@@ -238,13 +238,13 @@ const results = await swarm.execute({
 ```typescript
 // Spawn 3 specialized agents
 await Promise.all([
-  swarm.spawn({ name: 'security', agent: 'plan', model: 'claude-sonnet-4' }),
-  swarm.spawn({ name: 'performance', agent: 'general', model: 'gemini-2.5-flash' }),
-  swarm.spawn({ name: 'style', agent: 'plan', model: 'deepseek-r1' })
+  flow.spawn({ name: 'security', agent: 'plan', model: 'claude-sonnet-4' }),
+  flow.spawn({ name: 'performance', agent: 'general', model: 'gemini-2.5-flash' }),
+  flow.spawn({ name: 'style', agent: 'plan', model: 'deepseek-r1' })
 ]);
 
 // Execute in parallel
-const results = await swarm.executeParallel(
+const results = await flow.executeParallel(
   'Analyze this codebase',
   ['security', 'performance', 'style']
 );
@@ -255,26 +255,26 @@ const results = await swarm.executeParallel(
 
 ```typescript
 // Agent 1: Research
-const research = await swarm.execute({
+const research = await flow.execute({
   task: 'Research authentication methods',
   agents: ['researcher']
 });
 
 // Store in shared memory
-await swarm.memory.set('auth-research', research[0].output, 3600);
+await flow.memory.set('auth-research', research[0].output, 3600);
 
 // Agent 2: Implement (accesses shared memory)
-await swarm.execute({
+await flow.execute({
   task: 'Implement auth based on research in memory',
   agents: ['coder']
 });
-// Coder agent can call swarm_memory_get('auth-research')
+// Coder agent can call flow_memory_get('auth-research')
 ```
 
 ### Pattern 4: Hierarchical Delegation
 
 ```typescript
-const results = await swarm.executeHierarchical(
+const results = await flow.executeHierarchical(
   'Build a microservices architecture',
   'architect',     // Coordinator
   ['coder1', 'coder2', 'coder3']  // Workers
@@ -286,7 +286,7 @@ const results = await swarm.executeHierarchical(
 
 ## Configuration
 
-### swarm.config.json
+### flow.config.json
 
 Create a config file for reusable settings:
 
@@ -311,7 +311,7 @@ Create a config file for reusable settings:
   },
   "memory": {
     "backend": "file",
-    "path": "./.swarm-memory"
+    "path": "./.flow-memory"
   },
   "agents": [
     {
@@ -332,13 +332,13 @@ Create a config file for reusable settings:
 
 Load config:
 ```bash
-opencode-swarm --config swarm.config.json exec --task "..."
+opencode-flow --config flow.config.json exec --task "..."
 ```
 
 Or programmatically:
 ```typescript
-import config from './swarm.config.json';
-const swarm = new OpencodeSwarm(config);
+import config from './flow.config.json';
+const flow = new OpencodeFlow(config);
 ```
 
 ---
@@ -346,9 +346,9 @@ const swarm = new OpencodeSwarm(config);
 ## Next Steps
 
 1. **Explore Examples**
-   - `/examples/code-review-swarm.ts` - Automated PR reviews
-   - `/examples/api-generator-swarm.ts` - Multi-phase API generation
-   - `/examples/security-audit-swarm.ts` - Parallel security analysis
+   - `/examples/code-review-flow.ts` - Automated PR reviews
+   - `/examples/api-generator-flow.ts` - Multi-phase API generation
+   - `/examples/security-audit-flow.ts` - Parallel security analysis
 
 2. **Read Documentation**
    - [API Reference](./API_REFERENCE.md) - Complete API docs
@@ -400,7 +400,7 @@ modelRouter: {
 ### High costs
 **Solution:** Use cost optimization:
 ```bash
-opencode-swarm exec \
+opencode-flow exec \
   --task "..." \
   --agents reviewer \
   --optimize cost \
@@ -411,8 +411,8 @@ opencode-swarm exec \
 
 ## Support
 
-- **Issues:** https://github.com/yourusername/opencode-swarm/issues
-- **Discussions:** https://github.com/yourusername/opencode-swarm/discussions
-- **Discord:** https://discord.gg/opencode-swarm
+- **Issues:** https://github.com/yourusername/opencode-flow/issues
+- **Discussions:** https://github.com/yourusername/opencode-flow/discussions
+- **Discord:** https://discord.gg/opencode-flow
 
-Happy swarming! 🚀
+Happy flowing! 🚀

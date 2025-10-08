@@ -1,4 +1,4 @@
-# OpenCode Swarm - Implementation Design
+# OpenCode Flow - Implementation Design
 
 **Version:** 1.0.0  
 **Last Updated:** October 2025
@@ -30,7 +30,7 @@
                               ▼
 ┌─────────────────────────────────────────────────────────────┐
 │                    Application Layer                        │
-│  SwarmOrchestrator, TaskDistributor, ResultAggregator       │
+│  FlowOrchestrator, TaskDistributor, ResultAggregator       │
 └─────────────────────────────────────────────────────────────┘
                               ▼
 ┌─────────────────────────────────────────────────────────────┐
@@ -40,18 +40,18 @@
                               ▼
 ┌─────────────────────────────────────────────────────────────┐
 │                      Integration Layer                      │
-│  SwarmClient (OpenCode API), MCP Tools, Providers           │
+│  FlowClient (OpenCode API), MCP Tools, Providers           │
 └─────────────────────────────────────────────────────────────┘
 ```
 
 ### Directory Structure
 
 ```
-opencode-swarm/
+opencode-flow/
 ├── src/
 │   ├── core/
 │   │   ├── client.ts              # OpenCode HTTP client wrapper
-│   │   ├── swarm.ts               # Main orchestrator
+│   │   ├── flow.ts               # Main orchestrator
 │   │   ├── agent-manager.ts       # Agent lifecycle management
 │   │   └── types.ts               # Core type definitions
 │   ├── router/
@@ -67,7 +67,7 @@ opencode-swarm/
 │   │   │   └── tester.ts          # Testing agent config
 │   │   └── registry.ts            # Agent registry/loader
 │   ├── tools/
-│   │   ├── swarm-memory.ts        # Custom MCP tool
+│   │   ├── flow-memory.ts        # Custom MCP tool
 │   │   ├── memory-backend.ts      # Storage abstraction
 │   │   └── coordination.ts        # Cross-agent coordination
 │   ├── cli/
@@ -75,20 +75,20 @@ opencode-swarm/
 │   │   ├── commands.ts            # Command definitions
 │   │   └── ui.ts                  # Terminal UI helpers
 │   ├── server/
-│   │   ├── index.ts               # HTTP server for swarm API
+│   │   ├── index.ts               # HTTP server for flow API
 │   │   └── routes.ts              # API routes
 │   └── utils/
 │       ├── logger.ts              # Structured logging
 │       ├── config.ts              # Configuration management
 │       └── errors.ts              # Custom error types
 ├── tools/                          # MCP tool implementations
-│   └── swarm-memory/
+│   └── flow-memory/
 │       ├── index.ts
 │       └── package.json
 ├── examples/
-│   ├── code-review-swarm.ts
-│   ├── api-generator-swarm.ts
-│   └── security-audit-swarm.ts
+│   ├── code-review-flow.ts
+│   ├── api-generator-flow.ts
+│   └── security-audit-flow.ts
 ├── tests/
 │   ├── unit/
 │   ├── integration/
@@ -114,13 +114,13 @@ opencode-swarm/
 
 ## Core Components
 
-### 1. SwarmClient (`src/core/client.ts`)
+### 1. FlowClient (`src/core/client.ts`)
 
 **Purpose:** Wrapper around OpenCode HTTP API with retry logic and error handling.
 
 **Interface:**
 ```typescript
-class SwarmClient {
+class FlowClient {
   constructor(config: ClientConfig);
   
   // Session management
@@ -150,14 +150,14 @@ class SwarmClient {
 
 ---
 
-### 2. SwarmOrchestrator (`src/core/swarm.ts`)
+### 2. FlowOrchestrator (`src/core/flow.ts`)
 
 **Purpose:** Main coordination layer for multi-agent execution.
 
 **Interface:**
 ```typescript
-class SwarmOrchestrator {
-  constructor(config: SwarmConfig);
+class FlowOrchestrator {
+  constructor(config: FlowConfig);
   
   // Agent lifecycle
   async spawn(agentConfig: AgentConfig): Promise<AgentInstance>;
@@ -171,7 +171,7 @@ class SwarmOrchestrator {
   async executeHierarchical(task: string, coordinator: string, workers: string[]): Promise<ExecutionResult>;
   
   // Memory & coordination
-  get memory(): SwarmMemory;
+  get memory(): FlowMemory;
   async waitForAgent(agentName: string): Promise<void>;
   
   // Lifecycle
@@ -374,20 +374,20 @@ const MODELS: ModelInfo[] = [
 
 ---
 
-### 4. SwarmMemory (`src/tools/swarm-memory.ts`)
+### 4. FlowMemory (`src/tools/flow-memory.ts`)
 
 **Purpose:** Cross-agent shared memory via custom MCP tool.
 
 **MCP Tool Implementation:**
 ```typescript
-// tools/swarm-memory/index.ts
+// tools/flow-memory/index.ts
 import { tool } from '@opencode-ai/plugin';
 import { MemoryBackend } from './backend';
 
 const backend = new MemoryBackend();
 
-export const swarm_memory_set = tool({
-  description: 'Store data in swarm shared memory',
+export const flow_memory_set = tool({
+  description: 'Store data in flow shared memory',
   args: {
     key: tool.schema.string().describe('Memory key'),
     value: tool.schema.any().describe('Value to store'),
@@ -399,8 +399,8 @@ export const swarm_memory_set = tool({
   }
 });
 
-export const swarm_memory_get = tool({
-  description: 'Retrieve data from swarm shared memory',
+export const flow_memory_get = tool({
+  description: 'Retrieve data from flow shared memory',
   args: {
     key: tool.schema.string().describe('Memory key')
   },
@@ -410,16 +410,16 @@ export const swarm_memory_get = tool({
   }
 });
 
-export const swarm_memory_list = tool({
-  description: 'List all keys in swarm memory',
+export const flow_memory_list = tool({
+  description: 'List all keys in flow memory',
   args: {},
   async execute(args, context) {
     return await backend.listKeys();
   }
 });
 
-export const swarm_memory_delete = tool({
-  description: 'Delete key from swarm memory',
+export const flow_memory_delete = tool({
+  description: 'Delete key from flow memory',
   args: {
     key: tool.schema.string().describe('Memory key')
   },
@@ -434,7 +434,7 @@ export const swarm_memory_delete = tool({
 ```typescript
 // File-based (default)
 class FileBackend implements MemoryBackend {
-  private storePath = './.swarm-memory';
+  private storePath = './.flow-memory';
   
   async set(key: string, value: any, ttl?: number): Promise<void> {
     const data = { value, expiresAt: ttl ? Date.now() + ttl * 1000 : null };
@@ -481,7 +481,7 @@ class RedisBackend implements MemoryBackend {
 ```typescript
 class AgentManager {
   private agents = new Map<string, AgentInstance>();
-  private client: SwarmClient;
+  private client: FlowClient;
   
   async spawn(config: AgentConfig): Promise<AgentInstance> {
     // 1. Validate config
@@ -644,36 +644,36 @@ interface MemoryEntry {
 
 ```bash
 # Spawn agents
-opencode-swarm spawn --agent researcher --model gemini-2.5-flash
-opencode-swarm spawn --agent coder --model claude-sonnet-4
+opencode-flow spawn --agent researcher --model gemini-2.5-flash
+opencode-flow spawn --agent coder --model claude-sonnet-4
 
 # Execute task
-opencode-swarm exec --task "Build REST API" --agents researcher,coder
+opencode-flow exec --task "Build REST API" --agents researcher,coder
 
 # With optimization
-opencode-swarm exec \
+opencode-flow exec \
   --task "Code review" \
   --agents reviewer \
   --optimize cost \
   --max-cost 0.01
 
 # List active agents
-opencode-swarm list
+opencode-flow list
 
 # Terminate agent
-opencode-swarm terminate researcher
+opencode-flow terminate researcher
 
 # Shutdown all
-opencode-swarm shutdown
+opencode-flow shutdown
 
 # Server mode
-opencode-swarm serve --port 5000
+opencode-flow serve --port 5000
 ```
 
 ### HTTP API (Server Mode)
 
 ```typescript
-// POST /swarm/spawn
+// POST /flow/spawn
 {
   "name": "researcher",
   "agent": "general",
@@ -682,7 +682,7 @@ opencode-swarm serve --port 5000
 }
 // Response: { "agentId": "researcher", "sessionId": "abc123" }
 
-// POST /swarm/execute
+// POST /flow/execute
 {
   "task": "Build REST API",
   "agents": ["researcher", "coder"],
@@ -690,16 +690,16 @@ opencode-swarm serve --port 5000
 }
 // Response: ExecutionResult[]
 
-// GET /swarm/agents
+// GET /flow/agents
 // Response: AgentInstance[]
 
-// DELETE /swarm/agent/:name
+// DELETE /flow/agent/:name
 // Response: { "success": true }
 
-// GET /swarm/memory/:key
+// GET /flow/memory/:key
 // Response: { "value": any }
 
-// POST /swarm/memory
+// POST /flow/memory
 { "key": "api-design", "value": {...}, "ttl": 3600 }
 // Response: { "success": true }
 ```
@@ -715,7 +715,7 @@ opencode-swarm serve --port 5000
        │
        ▼
 ┌─────────────┐       ┌──────────────┐
-│   Swarm     │◄─────►│ AgentManager │
+│    Flow     │◄─────►│ AgentManager │
 │ Orchestrator│       └──────────────┘
 └──────┬──────┘
        │
@@ -723,12 +723,12 @@ opencode-swarm serve --port 5000
        │          │
        ▼          ▼
 ┌─────────────┐  ┌──────────────┐
-│ ModelRouter │  │ SwarmMemory  │
+│ ModelRouter │  │ FlowMemory  │
 └─────────────┘  └──────────────┘
        │
        ▼
 ┌─────────────┐
-│ SwarmClient │
+│ FlowClient │
 └─────────────┘
        │
        ▼
@@ -740,11 +740,11 @@ opencode-swarm serve --port 5000
 
 **Build Order:**
 1. Core types (`src/core/types.ts`)
-2. SwarmClient (`src/core/client.ts`)
+2. FlowClient (`src/core/client.ts`)
 3. ModelRouter (`src/router/optimizer.ts`)
-4. SwarmMemory tool (`src/tools/swarm-memory.ts`)
+4. FlowMemory tool (`src/tools/flow-memory.ts`)
 5. AgentManager (`src/core/agent-manager.ts`)
-6. SwarmOrchestrator (`src/core/swarm.ts`)
+6. FlowOrchestrator (`src/core/flow.ts`)
 7. CLI (`src/cli/index.ts`)
 8. Server (`src/server/index.ts`)
 
@@ -755,25 +755,25 @@ opencode-swarm serve --port 5000
 ### Error Hierarchy
 
 ```typescript
-class SwarmError extends Error {
+class FlowError extends Error {
   constructor(message: string, public code: string, public details?: any) {
     super(message);
   }
 }
 
-class AgentSpawnError extends SwarmError {
+class AgentSpawnError extends FlowError {
   constructor(agentName: string, cause: Error) {
     super(`Failed to spawn agent: ${agentName}`, 'AGENT_SPAWN_FAILED', { agentName, cause });
   }
 }
 
-class TaskExecutionError extends SwarmError {
+class TaskExecutionError extends FlowError {
   constructor(task: string, agent: string, cause: Error) {
     super(`Task execution failed: ${task}`, 'TASK_FAILED', { task, agent, cause });
   }
 }
 
-class ModelSelectionError extends SwarmError {
+class ModelSelectionError extends FlowError {
   constructor(reason: string) {
     super(`Model selection failed: ${reason}`, 'MODEL_SELECTION_FAILED', { reason });
   }
@@ -852,15 +852,15 @@ describe('ModelRouter', () => {
 
 ### Integration Tests
 ```typescript
-// tests/integration/swarm.test.ts
-describe('SwarmOrchestrator', () => {
+// tests/integration/flow.test.ts
+describe('FlowOrchestrator', () => {
   test('spawns and executes multiple agents', async () => {
-    const swarm = new SwarmOrchestrator(config);
+    const flow = new FlowOrchestrator(config);
     
-    await swarm.spawn({ name: 'agent1', agent: 'build' });
-    await swarm.spawn({ name: 'agent2', agent: 'plan' });
+    await flow.spawn({ name: 'agent1', agent: 'build' });
+    await flow.spawn({ name: 'agent2', agent: 'plan' });
     
-    const results = await swarm.executeParallel('test task', ['agent1', 'agent2']);
+    const results = await flow.executeParallel('test task', ['agent1', 'agent2']);
     
     expect(results).toHaveLength(2);
     expect(results[0].status).toBe('fulfilled');
@@ -873,13 +873,13 @@ describe('SwarmOrchestrator', () => {
 // tests/e2e/cli.test.ts
 describe('CLI', () => {
   test('full workflow: spawn -> execute -> shutdown', async () => {
-    const { stdout } = await exec('opencode-swarm spawn --agent researcher');
+    const { stdout } = await exec('opencode-flow spawn --agent researcher');
     expect(stdout).toContain('Agent spawned');
     
-    const { stdout: execOut } = await exec('opencode-swarm exec --task "test" --agents researcher');
+    const { stdout: execOut } = await exec('opencode-flow exec --task "test" --agents researcher');
     expect(execOut).toContain('Execution complete');
     
-    await exec('opencode-swarm shutdown');
+    await exec('opencode-flow shutdown');
   });
 });
 ```
@@ -895,7 +895,7 @@ describe('CLI', () => {
 | Agent spawn time | <2s | Fast iteration |
 | Task execution overhead | <100ms | Minimal wrapper cost |
 | Memory latency | <50ms | Real-time coordination |
-| Concurrent agents | 10+ | Typical swarm size |
+| Concurrent agents | 10+ | Typical flow size |
 | Cold start (Docker) | <5s | Acceptable for batch jobs |
 
 ### Bottleneck Mitigation
@@ -927,7 +927,7 @@ describe('CLI', () => {
 
 ### Permissions
 - Respect OpenCode's permission system
-- Additional layer: swarm-level tool whitelist
+- Additional layer: flow-level tool whitelist
 - Audit log for all agent actions
 
 ### Network
@@ -945,7 +945,7 @@ describe('CLI', () => {
 - [ ] Docker image builds (<100MB)
 - [ ] Kubernetes manifests validated
 - [ ] Documentation complete
-- [ ] Example swarms tested
+- [ ] Example flows tested
 - [ ] Performance benchmarks run
 - [ ] Security audit complete
 
@@ -954,7 +954,7 @@ describe('CLI', () => {
 ## Next Steps
 
 1. Set up project boilerplate (tsconfig, package.json, etc.)
-2. Implement `SwarmClient` with basic session management
+2. Implement `FlowClient` with basic session management
 3. Create simple CLI to spawn single agent
 4. Add parallel execution support
 5. Integrate model router

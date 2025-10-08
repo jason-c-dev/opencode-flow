@@ -1,5 +1,5 @@
 /**
- * Core type definitions for OpenCode Swarm
+ * Core type definitions for OpenCode Flow
  */
 
 // ============================================================================
@@ -176,10 +176,10 @@ export interface ModelInfo {
 }
 
 // ============================================================================
-// Swarm Configuration
+// Flow Configuration
 // ============================================================================
 
-export interface SwarmConfig {
+export interface FlowConfig {
   /** OpenCode server URL */
   serverUrl?: string;
   /** Model router configuration */
@@ -207,7 +207,7 @@ export interface MemoryConfig {
 // Memory
 // ============================================================================
 
-export interface SwarmMemory {
+export interface FlowMemory {
   set(key: string, value: any, ttl?: number): Promise<void>;
   get(key: string): Promise<any>;
   delete(key: string): Promise<void>;
@@ -302,18 +302,18 @@ export interface CostAnalytics {
 // Errors
 // ============================================================================
 
-export class SwarmError extends Error {
+export class FlowError extends Error {
   constructor(
     message: string,
     public code: string,
     public details?: any
   ) {
     super(message);
-    this.name = 'SwarmError';
+    this.name = 'FlowError';
   }
 }
 
-export class AgentSpawnError extends SwarmError {
+export class AgentSpawnError extends FlowError {
   constructor(agentName: string, cause: Error) {
     super(
       `Failed to spawn agent: ${agentName}`,
@@ -324,7 +324,7 @@ export class AgentSpawnError extends SwarmError {
   }
 }
 
-export class TaskExecutionError extends SwarmError {
+export class TaskExecutionError extends FlowError {
   constructor(task: string, agent: string, cause: Error) {
     super(
       `Task execution failed: ${task}`,
@@ -335,7 +335,7 @@ export class TaskExecutionError extends SwarmError {
   }
 }
 
-export class ModelSelectionError extends SwarmError {
+export class ModelSelectionError extends FlowError {
   constructor(reason: string) {
     super(
       `Model selection failed: ${reason}`,
@@ -350,7 +350,7 @@ export class ModelSelectionError extends SwarmError {
 // Events
 // ============================================================================
 
-export type SwarmEvent =
+export type FlowEvent =
   | { type: 'agent:spawned'; agent: AgentInstance }
   | { type: 'agent:terminated'; agentName: string }
   | { type: 'task:started'; task: string; agents: string[] }
@@ -359,5 +359,5 @@ export type SwarmEvent =
   | { type: 'memory:set'; key: string; value: any }
   | { type: 'memory:get'; key: string; value: any };
 
-export type EventHandler = (event: SwarmEvent) => void;
+export type EventHandler = (event: FlowEvent) => void;
 export type Unsubscribe = () => void;

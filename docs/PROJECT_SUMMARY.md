@@ -1,4 +1,4 @@
-# OpenCode Swarm - Project Summary
+# OpenCode Flow - Project Summary
 
 **Created:** October 2025  
 **Status:** Planning Complete - Ready for Implementation
@@ -134,7 +134,7 @@ Built-in intelligence:
 
 ### 📋 Phase 1: MVP (Week 1-2)
 - [ ] Project boilerplate
-- [ ] SwarmClient (OpenCode API wrapper)
+- [ ] FlowClient (OpenCode API wrapper)
 - [ ] Agent spawning
 - [ ] Basic CLI
 - [ ] Parallel execution
@@ -164,7 +164,7 @@ Built-in intelligence:
 - [ ] Docker image (<100MB)
 - [ ] Kubernetes manifests
 - [ ] Health checks
-- [ ] Example swarms (3+)
+- [ ] Example flows (3+)
 - [ ] Performance benchmarks
 - [ ] Launch documentation
 
@@ -176,10 +176,10 @@ Built-in intelligence:
 
 ### 🚀 Agent Orchestration
 ```typescript
-const swarm = new OpencodeSwarm();
-await swarm.spawn({ name: 'researcher', model: 'gemini-2.5-flash' });
-await swarm.spawn({ name: 'coder', model: 'claude-sonnet-4' });
-await swarm.execute({ task: '...', agents: ['researcher', 'coder'] });
+const flow = new OpencodeFlow();
+await flow.spawn({ name: 'researcher', model: 'gemini-2.5-flash' });
+await flow.spawn({ name: 'coder', model: 'claude-sonnet-4' });
+await flow.execute({ task: '...', agents: ['researcher', 'coder'] });
 ```
 
 ### 💰 Cost Optimization
@@ -193,8 +193,8 @@ modelRouter: {
 
 ### 🧠 Shared Memory
 ```typescript
-await swarm.memory.set('api-design', design);
-const design = await swarm.memory.get('api-design');
+await flow.memory.set('api-design', design);
+const design = await flow.memory.get('api-design');
 ```
 
 ### 🔄 Execution Modes
@@ -204,28 +204,28 @@ const design = await swarm.memory.get('api-design');
 
 ---
 
-## Comparison: Agentic Flow vs OpenCode Swarm
+## Comparison: Agentic Flow vs OpenCode Flow
 
-| Feature | Agentic Flow | OpenCode Swarm |
+| Feature | Agentic Flow | OpenCode Flow |
 |---------|--------------|----------------|
 | **Foundation** | Claude SDK | OpenCode HTTP API |
 | **Agents** | 150+ pre-built | Flexible (use OpenCode's system) |
 | **Multi-model** | ✅ Router | ✅ Router (ported) |
 | **MCP Tools** | 213 tools | ✅ Via OpenCode |
-| **Swarm Coord** | Built-in | ✅ Custom MCP tool |
+| **Flow Coord** | Built-in | ✅ Custom MCP tool |
 | **Deployment** | Local, Docker, Cloud | ✅ Same + Kubernetes |
 | **ONNX Local** | ✅ Built-in | Via OpenCode providers |
 | **Architecture** | Monolithic | ✅ Layered wrapper |
 | **Extensibility** | Custom agents | ✅ OpenCode config |
 
-**Key Advantage:** OpenCode Swarm is a **lightweight wrapper** (not a replacement) that leverages OpenCode's flexibility while adding swarm orchestration.
+**Key Advantage:** OpenCode Flow is a **lightweight wrapper** (not a replacement) that leverages OpenCode's flexibility while adding flow orchestration.
 
 ---
 
 ## Project Structure
 
 ```
-opencode-swarm/
+opencode-flow/
 ├── docs/                           # ✅ COMPLETE
 │   ├── PROJECT_SPEC.md
 │   ├── IMPLEMENTATION_DESIGN.md
@@ -236,13 +236,13 @@ opencode-swarm/
 │   ├── core/
 │   │   ├── types.ts               # ✅ Complete
 │   │   ├── client.ts              # 📋 TODO
-│   │   ├── swarm.ts               # 📋 TODO
+│   │   ├── flow.ts               # 📋 TODO
 │   │   └── agent-manager.ts       # 📋 TODO
 │   ├── router/
 │   │   ├── optimizer.ts           # 📋 TODO
 │   │   └── providers.ts           # 📋 TODO
 │   ├── tools/
-│   │   └── swarm-memory.ts        # 📋 TODO
+│   │   └── flow-memory.ts        # 📋 TODO
 │   ├── cli/
 │   │   └── index.ts               # 📋 TODO
 │   └── index.ts                   # ✅ Complete
@@ -267,7 +267,7 @@ opencode-swarm/
    opencode serve --port 4096
    ```
 
-2. **Implement SwarmClient** (`src/core/client.ts`)
+2. **Implement FlowClient** (`src/core/client.ts`)
    - OpenCode HTTP API wrapper
    - Session management
    - Message sending
@@ -280,7 +280,7 @@ opencode-swarm/
 
 4. **First test**
    ```bash
-   opencode-swarm spawn --name test --agent general --model test
+   opencode-flow spawn --name test --agent general --model test
    ```
 
 ### Week 2
@@ -290,7 +290,7 @@ opencode-swarm/
    - Health checks
    - Metrics tracking
 
-2. **Implement SwarmOrchestrator**
+2. **Implement FlowOrchestrator**
    - Parallel execution
    - Basic result aggregation
 
@@ -330,7 +330,7 @@ Continue per roadmap...
 - [ ] Docker image <100MB
 - [ ] <2s cold start
 - [ ] 10+ agents coordinating
-- [ ] 3+ example swarms
+- [ ] 3+ example flows
 - [ ] 90%+ test coverage
 
 ---
@@ -379,14 +379,14 @@ Continue per roadmap...
 
 ## Conclusion
 
-We have a **complete, production-ready specification** for OpenCode Swarm. The planning phase is done - now it's time to build! 🚀
+We have a **complete, production-ready specification** for OpenCode Flow. The planning phase is done - now it's time to build! 🚀
 
 **All design decisions are documented. All APIs are specified. All use cases are covered.**
 
 The path from here to a working MVP is clear:
-1. Implement `SwarmClient`
+1. Implement `FlowClient`
 2. Implement `AgentManager`
-3. Implement `SwarmOrchestrator`
+3. Implement `FlowOrchestrator`
 4. Add CLI
 5. Test
 6. Ship

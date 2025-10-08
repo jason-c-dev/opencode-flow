@@ -1,12 +1,12 @@
-# OpenCode Swarm - Documentation Index
+# OpenCode Flow - Documentation Index
 
-Welcome to the OpenCode Swarm documentation! This index will help you find what you need.
+Welcome to the OpenCode Flow documentation! This index will help you find what you need.
 
 ---
 
 ## 🎯 Start Here
 
-**New to OpenCode Swarm?**
+**New to OpenCode Flow?**
 1. Read the [README](../README.md) for an overview
 2. Follow [GETTING_STARTED.md](./GETTING_STARTED.md) for a 5-minute tutorial
 3. Review [API_REFERENCE.md](./API_REFERENCE.md) for complete API docs
@@ -92,7 +92,7 @@ Welcome to the OpenCode Swarm documentation! This index will help you find what 
 ## 📖 Reading Path by Role
 
 ### For End Users
-1. [README](../README.md) - What is OpenCode Swarm?
+1. [README](../README.md) - What is OpenCode Flow?
 2. [GETTING_STARTED](./GETTING_STARTED.md) - Install and run
 3. [API_REFERENCE](./API_REFERENCE.md) - Reference for daily use
 

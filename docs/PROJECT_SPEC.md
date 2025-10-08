@@ -1,4 +1,4 @@
-# OpenCode Swarm - Project Specification
+# OpenCode Flow - Project Specification
 
 **Version:** 1.0.0  
 **Created:** October 2025  
@@ -8,10 +8,10 @@
 
 ## Executive Summary
 
-OpenCode Swarm is a multi-agent orchestration framework built on top of OpenCode's HTTP server API. It enables spawning multiple specialized AI agents, each with custom models, system prompts, and tool access, coordinated through shared memory and parallel execution patterns.
+OpenCode Flow is a multi-agent orchestration framework built on top of OpenCode's HTTP server API. It enables spawning multiple specialized AI agents, each with custom models, system prompts, and tool access, coordinated through shared memory and parallel execution patterns.
 
 ### Vision
-Transform OpenCode from a single-agent TUI into a programmable multi-agent swarm platform capable of:
+Transform OpenCode from a single-agent TUI into a programmable multi-agent flow platform capable of:
 - Cost-optimized model routing (99% savings via DeepSeek, Gemini, local models)
 - Parallel task decomposition across specialized agents
 - Production deployment (local, Docker, Kubernetes)
@@ -22,9 +22,9 @@ Transform OpenCode from a single-agent TUI into a programmable multi-agent swarm
 ## Problem Statement
 
 ### Current Limitations
-1. **OpenCode** - Excellent TUI, but single-agent focused, no built-in swarm coordination
+1. **OpenCode** - Excellent TUI, but single-agent focused, no built-in flow coordination
 2. **Agentic Flow** - Good swarm support, but tightly coupled to Claude SDK
-3. **Gap** - No production-ready swarm orchestrator for OpenCode's flexible agent system
+3. **Gap** - No production-ready flow orchestrator for OpenCode's flexible agent system
 
 ### Solution
 A lightweight TypeScript wrapper that:
@@ -43,7 +43,7 @@ A lightweight TypeScript wrapper that:
 - Spawn multiple OpenCode sessions programmatically
 - Configure per-agent models, prompts, tools
 - Basic parallel execution
-- CLI interface: `opencode-swarm --agents researcher,coder --task "Build API"`
+- CLI interface: `opencode-flow --agents researcher,coder --task "Build API"`
 
 ✅ **Phase 2 (Model Router - Week 3)**
 - Cost-optimized model selection (port from agentic-flow)
@@ -61,7 +61,7 @@ A lightweight TypeScript wrapper that:
 - Docker deployment
 - Health checks & metrics
 - Kubernetes manifests
-- Example swarms (code review, API generation, security audit)
+- Example flows (code review, API generation, security audit)
 
 ### Non-Goals
 ❌ ONNX local inference (use OpenCode's provider system)
@@ -77,12 +77,12 @@ A lightweight TypeScript wrapper that:
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                    OpenCode Swarm CLI                       │
-│  $ opencode-swarm --agents researcher,coder,reviewer        │
+│                    OpenCode Flow CLI                       │
+│  $ opencode-flow --agents researcher,coder,reviewer        │
 └─────────────────────────────────────────────────────────────┘
                               ▼
 ┌─────────────────────────────────────────────────────────────┐
-│                   SwarmOrchestrator                         │
+│                   FlowOrchestrator                         │
 │  - Agent spawning       - Model routing                     │
 │  - Task distribution    - Result aggregation                │
 └─────────────────────────────────────────────────────────────┘
@@ -107,7 +107,7 @@ A lightweight TypeScript wrapper that:
 
 ### Component Breakdown
 
-#### 1. **SwarmClient** (`src/core/client.ts`)
+#### 1. **FlowClient** (`src/core/client.ts`)
 - Wraps OpenCode HTTP API
 - Session lifecycle management
 - Message streaming
@@ -119,13 +119,13 @@ A lightweight TypeScript wrapper that:
 - Fallback chains
 - Usage tracking
 
-#### 3. **SwarmOrchestrator** (`src/core/swarm.ts`)
+#### 3. **FlowOrchestrator** (`src/core/flow.ts`)
 - Agent spawning
 - Task distribution
 - Parallel execution
 - Result aggregation
 
-#### 4. **SwarmMemory** (`src/tools/swarm-memory.ts`)
+#### 4. **FlowMemory** (`src/tools/flow-memory.ts`)
 - Custom MCP tool
 - Key-value store (Redis/SQLite/File)
 - Cross-agent data sharing
@@ -184,8 +184,8 @@ interface AgentConfig {
   temperature?: number;
 }
 
-// Swarm Configuration
-interface SwarmConfig {
+// Flow Configuration
+interface FlowConfig {
   agents: AgentConfig[];
   modelRouter?: ModelRouterConfig;
   memory?: MemoryConfig;
@@ -217,32 +217,32 @@ interface TaskExecution {
 
 ```bash
 # Basic usage
-opencode-swarm --agents researcher,coder --task "Build REST API"
+opencode-flow --agents researcher,coder --task "Build REST API"
 
 # With model optimization
-opencode-swarm \
+opencode-flow \
   --agents researcher,coder,reviewer \
   --task "Security audit" \
   --optimize cost \
   --max-cost 0.01
 
 # Custom config
-opencode-swarm --config ./swarm.config.json
+opencode-flow --config ./flow.config.json
 
 # Interactive mode
-opencode-swarm --interactive
+opencode-flow --interactive
 
 # Server mode (HTTP API)
-opencode-swarm serve --port 5000
+opencode-flow serve --port 5000
 ```
 
 ### Programmatic API
 
 ```typescript
-import { OpencodeSwarm } from 'opencode-swarm';
+import { OpencodeFlow } from 'opencode-flow';
 
-// Initialize swarm
-const swarm = new OpencodeSwarm({
+// Initialize flow
+const flow = new OpencodeFlow({
   serverUrl: 'http://localhost:4096',
   modelRouter: {
     mode: 'balanced',
@@ -251,14 +251,14 @@ const swarm = new OpencodeSwarm({
 });
 
 // Spawn agents
-const researcher = await swarm.spawn({
+const researcher = await flow.spawn({
   name: 'researcher',
   agent: 'general',
   model: 'gemini-2.5-flash',
   systemPrompt: 'Research AI trends and summarize findings'
 });
 
-const coder = await swarm.spawn({
+const coder = await flow.spawn({
   name: 'coder',
   agent: 'build',
   model: 'anthropic/claude-sonnet-4',
@@ -266,18 +266,18 @@ const coder = await swarm.spawn({
 });
 
 // Execute tasks
-const results = await swarm.execute({
+const results = await flow.execute({
   task: 'Build a REST API with authentication',
   agents: ['researcher', 'coder'],
   mode: 'sequential'
 });
 
 // Access shared memory
-await swarm.memory.set('api-design', results[0].output);
-const design = await swarm.memory.get('api-design');
+await flow.memory.set('api-design', results[0].output);
+const design = await flow.memory.get('api-design');
 
 // Cleanup
-await swarm.shutdown();
+await flow.shutdown();
 ```
 
 ---
@@ -286,8 +286,8 @@ await swarm.shutdown();
 
 ### Agent Spawn Sequence
 ```
-1. User: opencode-swarm --agents researcher,coder
-2. CLI parses config → SwarmOrchestrator.init()
+1. User: opencode-flow --agents researcher,coder
+2. CLI parses config → FlowOrchestrator.init()
 3. For each agent:
    a. POST /session (create new session)
    b. Configure agent via message or config
@@ -297,7 +297,7 @@ await swarm.shutdown();
 
 ### Task Execution Flow
 ```
-1. User: swarm.execute({ task, agents })
+1. User: flow.execute({ task, agents })
 2. ModelRouter.selectModel(task, agent) → optimal model
 3. For each agent (parallel/sequential):
    a. POST /session/:id/message { text: task }
@@ -308,9 +308,9 @@ await swarm.shutdown();
 
 ### Memory Coordination
 ```
-1. Agent A: Use swarm_memory_set tool
+1. Agent A: Use flow_memory_set tool
 2. Custom MCP tool → writes to shared store
-3. Agent B: Use swarm_memory_get tool
+3. Agent B: Use flow_memory_get tool
 4. Custom MCP tool → reads from shared store
 5. Coordination achieved without direct communication
 ```
@@ -324,8 +324,8 @@ await swarm.shutdown();
 # Terminal 1: Start OpenCode server
 opencode serve --port 4096
 
-# Terminal 2: Run swarm
-opencode-swarm --agents researcher,coder --task "Build API"
+# Terminal 2: Run flow
+opencode-flow --agents researcher,coder --task "Build API"
 ```
 
 ### Docker
@@ -351,13 +351,13 @@ CMD ["node", "dist/cli.js"]
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: swarm-code-review
+  name: flow-code-review
 spec:
   template:
     spec:
       containers:
-      - name: swarm
-        image: opencode-swarm:latest
+      - name: flow
+        image: opencode-flow:latest
         args: ["--agents", "reviewer", "--task", "Review PR #123"]
         env:
         - name: OPENCODE_SERVER_URL
@@ -413,7 +413,7 @@ spec:
 ### Phase 4 (Production)
 - ✅ Docker image <100MB
 - ✅ Deploy to Kubernetes
-- ✅ 3+ example swarms documented
+- ✅ 3+ example flows documented
 - ✅ <2s cold start time
 
 ---
@@ -433,7 +433,7 @@ spec:
 
 ### Week 1-2: MVP
 - [ ] Project setup, TypeScript config
-- [ ] SwarmClient wrapper
+- [ ] FlowClient wrapper
 - [ ] Basic agent spawning
 - [ ] CLI skeleton
 - [ ] Parallel execution
@@ -453,7 +453,7 @@ spec:
 ### Week 6-8: Production
 - [ ] Docker setup
 - [ ] Kubernetes manifests
-- [ ] Example swarms
+- [ ] Example flows
 - [ ] Documentation
 - [ ] Launch blog post
 
@@ -467,7 +467,7 @@ spec:
 2. **Session Cleanup**: Auto-cleanup after timeout or manual?
    - Recommendation: Auto-cleanup with configurable TTL
 
-3. **Error Handling**: Retry failed agents or fail entire swarm?
+3. **Error Handling**: Retry failed agents or fail entire flow?
    - Recommendation: Configurable, default to retry 3x then continue
 
 4. **Streaming**: Real-time output or batch results?

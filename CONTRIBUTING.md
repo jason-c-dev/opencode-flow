@@ -1,6 +1,6 @@
-# Contributing to OpenCode Swarm
+# Contributing to OpenCode Flow
 
-Thank you for your interest in contributing! This document provides guidelines and instructions for contributing to OpenCode Swarm.
+Thank you for your interest in contributing! This document provides guidelines and instructions for contributing to OpenCode Flow.
 
 ---
 
@@ -16,8 +16,8 @@ Be respectful, collaborative, and constructive. We're building tools to help dev
 
 ```bash
 # Fork on GitHub, then:
-git clone https://github.com/YOUR_USERNAME/opencode-swarm.git
-cd opencode-swarm
+git clone https://github.com/YOUR_USERNAME/opencode-flow.git
+cd opencode-flow
 ```
 
 ### 2. Install Dependencies
@@ -107,7 +107,7 @@ src/
 ├── core/
 │   ├── types.ts           # Type definitions
 │   ├── client.ts          # OpenCode API wrapper
-│   ├── swarm.ts           # Main orchestrator
+│   ├── flow.ts           # Main orchestrator
 │   └── agent-manager.ts   # Agent lifecycle
 ├── router/
 │   ├── optimizer.ts       # Model selection
@@ -116,7 +116,7 @@ src/
 ├── agents/
 │   └── definitions/       # Pre-built agents
 ├── tools/
-│   └── swarm-memory.ts    # MCP tools
+│   └── flow-memory.ts    # MCP tools
 ├── cli/
 │   └── index.ts           # CLI interface
 └── utils/
@@ -132,7 +132,7 @@ src/
 
 Found a bug? Great!
 
-1. Check [existing issues](https://github.com/yourusername/opencode-swarm/issues)
+1. Check [existing issues](https://github.com/yourusername/opencode-flow/issues)
 2. Create new issue if needed
 3. Fix the bug
 4. Add regression test
@@ -142,7 +142,7 @@ Found a bug? Great!
 
 Have an idea? Let's discuss first!
 
-1. Create a [feature request issue](https://github.com/yourusername/opencode-swarm/issues/new?template=feature_request.md)
+1. Create a [feature request issue](https://github.com/yourusername/opencode-flow/issues/new?template=feature_request.md)
 2. Discuss approach with maintainers
 3. Get approval
 4. Implement feature
@@ -198,24 +198,24 @@ describe('ModelRouter', () => {
 Test component interactions:
 
 ```typescript
-// tests/integration/swarm.test.ts
+// tests/integration/flow.test.ts
 import { describe, test, expect, beforeAll, afterAll } from 'vitest';
-import { OpencodeSwarm } from '../../src/core/swarm';
+import { OpencodeFlow } from '../../src/core/flow';
 
-describe('SwarmOrchestrator Integration', () => {
-  let swarm: OpencodeSwarm;
+describe('FlowOrchestrator Integration', () => {
+  let flow: OpencodeFlow;
 
   beforeAll(async () => {
-    swarm = new OpencodeSwarm({ serverUrl: 'http://localhost:4096' });
+    flow = new OpencodeFlow({ serverUrl: 'http://localhost:4096' });
   });
 
   afterAll(async () => {
-    await swarm.shutdown();
+    await flow.shutdown();
   });
 
   test('spawns and executes agents', async () => {
-    await swarm.spawn({ name: 'agent1', agent: 'build', model: 'test-model' });
-    const results = await swarm.execute({
+    await flow.spawn({ name: 'agent1', agent: 'build', model: 'test-model' });
+    const results = await flow.execute({
       task: 'test task',
       agents: ['agent1']
     });
@@ -242,18 +242,18 @@ describe('CLI E2E', () => {
   test('spawn and execute workflow', async () => {
     // Spawn agent
     const { stdout: spawnOut } = await execAsync(
-      'opencode-swarm spawn --name test-agent --agent general --model test'
+      'opencode-flow spawn --name test-agent --agent general --model test'
     );
     expect(spawnOut).toContain('spawned successfully');
 
     // Execute task
     const { stdout: execOut } = await execAsync(
-      'opencode-swarm exec --task "test" --agents test-agent'
+      'opencode-flow exec --task "test" --agents test-agent'
     );
     expect(execOut).toContain('completed');
 
     // Cleanup
-    await execAsync('opencode-swarm terminate test-agent');
+    await execAsync('opencode-flow terminate test-agent');
   });
 });
 ```
@@ -311,7 +311,7 @@ describe('CLI E2E', () => {
      if (error instanceof RateLimitError) {
        // Handle specifically
      }
-     throw new SwarmError('Operation failed', 'OP_FAILED', { error });
+     throw new FlowError('Operation failed', 'OP_FAILED', { error });
    }
    ```
 
@@ -395,7 +395,7 @@ export type ExecutionMode =
   | 'round-robin';  // New mode
 ```
 
-**2. Implement** (`src/core/swarm.ts`):
+**2. Implement** (`src/core/flow.ts`):
 ```typescript
 async executeRoundRobin(
   task: string,
@@ -405,7 +405,7 @@ async executeRoundRobin(
 }
 ```
 
-**3. Add tests** (`tests/unit/swarm.test.ts`):
+**3. Add tests** (`tests/unit/flow.test.ts`):
 ```typescript
 test('round-robin distributes tasks evenly', async () => {
   // Test implementation
@@ -482,7 +482,7 @@ Contributors are listed in:
 - GitHub contributors page
 - Release notes
 
-Thank you for making OpenCode Swarm better! 🙏
+Thank you for making OpenCode Flow better! 🙏
 
 ---
 

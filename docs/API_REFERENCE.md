@@ -1,4 +1,4 @@
-# OpenCode Swarm - API Reference
+# OpenCode Flow - API Reference
 
 **Version:** 1.0.0
 
@@ -16,12 +16,12 @@
 
 ## CLI API
 
-### `opencode-swarm spawn`
+### `opencode-flow spawn`
 
 Spawn a new agent instance.
 
 ```bash
-opencode-swarm spawn [options]
+opencode-flow spawn [options]
 ```
 
 **Options:**
@@ -36,27 +36,27 @@ opencode-swarm spawn [options]
 **Examples:**
 ```bash
 # Spawn researcher with Gemini
-opencode-swarm spawn --name researcher --agent general --model gemini-2.5-flash
+opencode-flow spawn --name researcher --agent general --model gemini-2.5-flash
 
 # Spawn coder with custom prompt
-opencode-swarm spawn \
+opencode-flow spawn \
   --name coder \
   --agent build \
   --model claude-sonnet-4 \
   --prompt "You are an expert TypeScript developer"
 
 # Spawn from config file
-opencode-swarm spawn --config ./agents/reviewer.json
+opencode-flow spawn --config ./agents/reviewer.json
 ```
 
 ---
 
-### `opencode-swarm exec`
+### `opencode-flow exec`
 
 Execute a task across one or more agents.
 
 ```bash
-opencode-swarm exec [options]
+opencode-flow exec [options]
 ```
 
 **Options:**
@@ -72,13 +72,13 @@ opencode-swarm exec [options]
 **Examples:**
 ```bash
 # Parallel execution
-opencode-swarm exec \
+opencode-flow exec \
   --task "Build REST API with auth" \
   --agents researcher,coder \
   --mode parallel
 
 # Sequential with cost optimization
-opencode-swarm exec \
+opencode-flow exec \
   --task "Security audit" \
   --agents reviewer,tester \
   --mode sequential \
@@ -86,7 +86,7 @@ opencode-swarm exec \
   --max-cost 0.05
 
 # Stream output
-opencode-swarm exec \
+opencode-flow exec \
   --task "Generate docs" \
   --agents coder \
   --stream
@@ -94,12 +94,12 @@ opencode-swarm exec \
 
 ---
 
-### `opencode-swarm list`
+### `opencode-flow list`
 
 List all active agents.
 
 ```bash
-opencode-swarm list [options]
+opencode-flow list [options]
 ```
 
 **Options:**
@@ -116,31 +116,31 @@ reviewer      plan     deepseek-r1        idle      i9j0k1l2
 
 ---
 
-### `opencode-swarm terminate`
+### `opencode-flow terminate`
 
 Terminate one or all agents.
 
 ```bash
-opencode-swarm terminate [name]
+opencode-flow terminate [name]
 ```
 
 **Examples:**
 ```bash
 # Terminate specific agent
-opencode-swarm terminate researcher
+opencode-flow terminate researcher
 
 # Terminate all agents
-opencode-swarm terminate --all
+opencode-flow terminate --all
 ```
 
 ---
 
-### `opencode-swarm serve`
+### `opencode-flow serve`
 
 Start HTTP server for programmatic access.
 
 ```bash
-opencode-swarm serve [options]
+opencode-flow serve [options]
 ```
 
 **Options:**
@@ -150,44 +150,44 @@ opencode-swarm serve [options]
 
 **Example:**
 ```bash
-opencode-swarm serve --port 5000 --cors
+opencode-flow serve --port 5000 --cors
 ```
 
 ---
 
-### `opencode-swarm config`
+### `opencode-flow config`
 
 Manage configuration.
 
 ```bash
 # Show current config
-opencode-swarm config show
+opencode-flow config show
 
 # Set config value
-opencode-swarm config set router.mode cost
+opencode-flow config set router.mode cost
 
 # Initialize config file
-opencode-swarm config init
+opencode-flow config init
 ```
 
 ---
 
 ## Programmatic API
 
-### SwarmOrchestrator
+### FlowOrchestrator
 
-Main class for managing agent swarms.
+Main class for managing agent flows.
 
 ```typescript
-import { OpencodeSwarm } from 'opencode-swarm';
+import { OpencodeFlow } from 'opencode-flow';
 
-const swarm = new OpencodeSwarm(config);
+const flow = new OpencodeFlow(config);
 ```
 
 #### Constructor
 
 ```typescript
-constructor(config?: SwarmConfig)
+constructor(config?: FlowConfig)
 ```
 
 **Parameters:**
@@ -198,7 +198,7 @@ constructor(config?: SwarmConfig)
 
 **Example:**
 ```typescript
-const swarm = new OpencodeSwarm({
+const flow = new OpencodeFlow({
   serverUrl: 'http://localhost:4096',
   modelRouter: {
     mode: 'balanced',
@@ -252,7 +252,7 @@ interface AgentInstance {
 
 **Example:**
 ```typescript
-const researcher = await swarm.spawn({
+const researcher = await flow.spawn({
   name: 'researcher',
   agent: 'general',
   model: 'gemini-2.5-flash',
@@ -302,7 +302,7 @@ interface ExecutionResult {
 
 **Example:**
 ```typescript
-const results = await swarm.execute({
+const results = await flow.execute({
   task: 'Build a REST API with authentication',
   agents: ['researcher', 'coder'],
   mode: 'sequential',
@@ -329,7 +329,7 @@ async executeParallel(task: string, agents: string[]): Promise<ExecutionResult[]
 
 **Example:**
 ```typescript
-const results = await swarm.executeParallel(
+const results = await flow.executeParallel(
   'Analyze this codebase',
   ['researcher', 'coder', 'reviewer']
 );
@@ -348,7 +348,7 @@ async executeSequential(task: string, agents: string[]): Promise<ExecutionResult
 **Example:**
 ```typescript
 // Research → Design → Implement → Test
-const results = await swarm.executeSequential(
+const results = await flow.executeSequential(
   'Build user authentication',
   ['researcher', 'architect', 'coder', 'tester']
 );
@@ -366,7 +366,7 @@ async terminate(agentName: string): Promise<void>
 
 **Example:**
 ```typescript
-await swarm.terminate('researcher');
+await flow.terminate('researcher');
 ```
 
 ---
@@ -381,7 +381,7 @@ async shutdown(): Promise<void>
 
 **Example:**
 ```typescript
-await swarm.shutdown();
+await flow.shutdown();
 ```
 
 ---
@@ -391,12 +391,12 @@ await swarm.shutdown();
 Access shared memory.
 
 ```typescript
-readonly memory: SwarmMemory
+readonly memory: FlowMemory
 ```
 
 **Methods:**
 ```typescript
-interface SwarmMemory {
+interface FlowMemory {
   set(key: string, value: any, ttl?: number): Promise<void>;
   get(key: string): Promise<any>;
   delete(key: string): Promise<void>;
@@ -408,16 +408,16 @@ interface SwarmMemory {
 **Example:**
 ```typescript
 // Store data
-await swarm.memory.set('api-design', { 
+await flow.memory.set('api-design', { 
   endpoints: ['/users', '/auth'],
   database: 'postgresql'
 }, 3600); // TTL: 1 hour
 
 // Retrieve data
-const design = await swarm.memory.get('api-design');
+const design = await flow.memory.get('api-design');
 
 // List all keys
-const keys = await swarm.memory.list();
+const keys = await flow.memory.list();
 ```
 
 ---
@@ -427,7 +427,7 @@ const keys = await swarm.memory.list();
 Standalone model optimization.
 
 ```typescript
-import { ModelRouter } from 'opencode-swarm/router';
+import { ModelRouter } from 'opencode-flow/router';
 
 const router = new ModelRouter(config);
 ```
@@ -503,11 +503,11 @@ console.log(`Requests: ${analytics.requestCount}`);
 
 ## HTTP Server API
 
-Start server: `opencode-swarm serve --port 5000`
+Start server: `opencode-flow serve --port 5000`
 
 Base URL: `http://localhost:5000`
 
-### POST /swarm/spawn
+### POST /flow/spawn
 
 Spawn a new agent.
 
@@ -533,7 +533,7 @@ Spawn a new agent.
 
 ---
 
-### POST /swarm/execute
+### POST /flow/execute
 
 Execute a task.
 
@@ -571,7 +571,7 @@ Execute a task.
 
 ---
 
-### GET /swarm/agents
+### GET /flow/agents
 
 List all agents.
 
@@ -589,7 +589,7 @@ List all agents.
 
 ---
 
-### DELETE /swarm/agent/:name
+### DELETE /flow/agent/:name
 
 Terminate an agent.
 
@@ -603,7 +603,7 @@ Terminate an agent.
 
 ---
 
-### GET /swarm/memory/:key
+### GET /flow/memory/:key
 
 Get memory value.
 
@@ -618,7 +618,7 @@ Get memory value.
 
 ---
 
-### POST /swarm/memory
+### POST /flow/memory
 
 Set memory value.
 
@@ -640,7 +640,7 @@ Set memory value.
 
 ---
 
-### GET /swarm/analytics
+### GET /flow/analytics
 
 Get cost analytics.
 
@@ -665,9 +665,9 @@ Get cost analytics.
 
 ## MCP Tools
 
-Custom MCP tools for swarm coordination.
+Custom MCP tools for flow coordination.
 
-### swarm_memory_set
+### flow_memory_set
 
 Store data in shared memory.
 
@@ -689,7 +689,7 @@ Store data in shared memory.
 
 ---
 
-### swarm_memory_get
+### flow_memory_get
 
 Retrieve data from shared memory.
 
@@ -707,7 +707,7 @@ Retrieve data from shared memory.
 
 ---
 
-### swarm_memory_list
+### flow_memory_list
 
 List all keys in memory.
 
@@ -717,7 +717,7 @@ List all keys in memory.
 
 ---
 
-### swarm_memory_delete
+### flow_memory_delete
 
 Delete key from memory.
 
@@ -730,13 +730,13 @@ Delete key from memory.
 
 ## Configuration Files
 
-### swarm.config.json
+### flow.config.json
 
 Main configuration file.
 
 ```json
 {
-  "$schema": "https://opencode-swarm.dev/schema.json",
+  "$schema": "https://opencode-flow.dev/schema.json",
   "serverUrl": "http://localhost:4096",
   "modelRouter": {
     "mode": "balanced",
@@ -756,7 +756,7 @@ Main configuration file.
   },
   "memory": {
     "backend": "file",
-    "path": "./.swarm-memory"
+    "path": "./.flow-memory"
   },
   "agents": [
     {
@@ -814,11 +814,11 @@ OPENAI_API_KEY=sk-...
 GOOGLE_API_KEY=...
 OPENROUTER_API_KEY=sk-or-v1-...
 
-# Swarm configuration
-SWARM_MODE=production
-SWARM_MEMORY_BACKEND=redis
-SWARM_MEMORY_URL=redis://localhost:6379
-SWARM_LOG_LEVEL=info
+# Flow configuration
+FLOW_MODE=production
+FLOW_MEMORY_BACKEND=redis
+FLOW_MEMORY_URL=redis://localhost:6379
+FLOW_LOG_LEVEL=info
 
 # Model router
 ROUTER_MODE=balanced
@@ -848,16 +848,16 @@ Full TypeScript definitions available in the package:
 
 ```typescript
 import type {
-  SwarmConfig,
+  FlowConfig,
   AgentConfig,
   AgentInstance,
   TaskExecution,
   ExecutionResult,
   ModelRouterConfig,
   ModelSelection,
-  SwarmMemory,
+  FlowMemory,
   CostAnalytics
-} from 'opencode-swarm';
+} from 'opencode-flow';
 ```
 
 ---

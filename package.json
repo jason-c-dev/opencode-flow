@@ -1,11 +1,11 @@
 {
-  "name": "opencode-swarm",
+  "name": "opencode-flow",
   "version": "0.1.0",
   "description": "Multi-agent orchestration framework built on OpenCode",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "bin": {
-    "opencode-swarm": "dist/cli.js"
+    "opencode-flow": "dist/cli.js"
   },
   "scripts": {
     "dev": "tsup --watch",
@@ -22,11 +22,12 @@
     "opencode",
     "ai",
     "agents",
-    "swarm",
+    "flow",
     "orchestration",
     "multi-agent",
     "llm",
-    "cost-optimization"
+    "cost-optimization",
+    "model-routing"
   ],
   "author": "Your Name",
   "license": "MIT",
@@ -54,6 +55,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/opencode-swarm.git"
+    "url": "https://github.com/yourusername/opencode-flow.git"
   }
 }

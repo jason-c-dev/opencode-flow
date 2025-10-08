@@ -1,8 +1,8 @@
-# 🤖 OpenCode Swarm
+# 🤖 OpenCode Flow
 
 **Production-ready multi-agent orchestration built on OpenCode's flexible agent system.**
 
-Transform OpenCode from a single-agent TUI into a programmable swarm platform with:
+Transform OpenCode from a single-agent TUI into a programmable flow platform with:
 - 🚀 **Cost optimization** - 99% savings via intelligent model routing (DeepSeek, Gemini, local models)
 - 🔄 **Parallel execution** - Spawn 10+ specialized agents working simultaneously
 - 🧠 **Shared memory** - Cross-agent coordination via custom MCP tools
@@ -14,14 +14,14 @@ Transform OpenCode from a single-agent TUI into a programmable swarm platform wi
 
 ```bash
 # Install
-npm install -g opencode-swarm
+npm install -g opencode-flow
 
 # Spawn agents
-opencode-swarm spawn --name researcher --agent general --model gemini-2.5-flash
-opencode-swarm spawn --name coder --agent build --model claude-sonnet-4
+opencode-flow spawn --name researcher --agent general --model gemini-2.5-flash
+opencode-flow spawn --name coder --agent build --model claude-sonnet-4
 
 # Execute task across agents
-opencode-swarm exec \
+opencode-flow exec \
   --task "Build a REST API with authentication" \
   --agents researcher,coder \
   --mode sequential
@@ -30,27 +30,27 @@ opencode-swarm exec \
 ```
 
 ```typescript
-import { OpencodeSwarm } from 'opencode-swarm';
+import { OpencodeFlow } from 'opencode-flow';
 
-const swarm = new OpencodeSwarm({
+const flow = new OpencodeFlow({
   modelRouter: { mode: 'cost', maxCostPerTask: 0.05 }
 });
 
 // Spawn specialized agents
-const researcher = await swarm.spawn({
+const researcher = await flow.spawn({
   name: 'researcher',
   agent: 'general',
   model: 'gemini-2.5-flash'
 });
 
-const coder = await swarm.spawn({
+const coder = await flow.spawn({
   name: 'coder',
   agent: 'build',
   model: 'claude-sonnet-4'
 });
 
 // Execute in parallel
-const results = await swarm.execute({
+const results = await flow.execute({
   task: 'Build REST API with auth',
   agents: ['researcher', 'coder'],
   mode: 'parallel'
@@ -61,7 +61,7 @@ console.log(`Total cost: $${results.reduce((sum, r) => sum + r.cost, 0)}`);
 
 ---
 
-## Why OpenCode Swarm?
+## Why OpenCode Flow?
 
 ### The Problem
 
@@ -72,14 +72,14 @@ console.log(`Total cost: $${results.reduce((sum, r) => sum + r.cost, 0)}`);
 - ✅ Multi-provider flexibility
 
 **But it lacks:**
-- ❌ Multi-agent swarm orchestration
+- ❌ Multi-agent flow orchestration
 - ❌ Cost-optimized model routing
 - ❌ Cross-agent coordination
 - ❌ Production deployment patterns
 
 ### The Solution
 
-OpenCode Swarm is a **lightweight TypeScript wrapper** that adds:
+OpenCode Flow is a **lightweight TypeScript wrapper** that adds:
 
 1. **Multi-Agent Spawning** - Create specialized agents programmatically
 2. **Model Router** - Auto-select optimal models (cost vs quality)
@@ -94,12 +94,12 @@ OpenCode Swarm is a **lightweight TypeScript wrapper** that adds:
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                   OpenCode Swarm CLI/SDK                    │
+│                   OpenCode Flow CLI/SDK                    │
 │  Spawn agents, execute tasks, coordinate via memory        │
 └─────────────────────────────────────────────────────────────┘
                               ▼
 ┌─────────────────────────────────────────────────────────────┐
-│                    SwarmOrchestrator                        │
+│                    FlowOrchestrator                        │
 │  - Agent spawning       - Model routing                     │
 │  - Task distribution    - Result aggregation                │
 └─────────────────────────────────────────────────────────────┘
@@ -125,7 +125,7 @@ OpenCode Swarm is a **lightweight TypeScript wrapper** that adds:
 **Automatically select the best model** for each task based on cost/quality tradeoffs.
 
 ```typescript
-const swarm = new OpencodeSwarm({
+const flow = new OpencodeFlow({
   modelRouter: {
     mode: 'cost',              // cost, quality, balanced, speed
     maxCostPerTask: 0.05,      // Budget cap
@@ -137,7 +137,7 @@ const swarm = new OpencodeSwarm({
   }
 });
 
-const results = await swarm.execute({
+const results = await flow.execute({
   task: 'Code review',
   agents: ['reviewer'],
   optimize: 'cost'  // Auto-selects DeepSeek R1 (85% cheaper)
@@ -155,7 +155,7 @@ const results = await swarm.execute({
 
 **Parallel** - All agents work simultaneously:
 ```typescript
-await swarm.executeParallel(
+await flow.executeParallel(
   'Analyze this codebase',
   ['researcher', 'coder', 'reviewer']
 );
@@ -163,7 +163,7 @@ await swarm.executeParallel(
 
 **Sequential** - Output from one feeds into next:
 ```typescript
-await swarm.executeSequential(
+await flow.executeSequential(
   'Build authentication system',
   ['researcher', 'architect', 'coder', 'tester']
 );
@@ -171,7 +171,7 @@ await swarm.executeSequential(
 
 **Hierarchical** - Coordinator delegates to workers:
 ```typescript
-await swarm.executeHierarchical(
+await flow.executeHierarchical(
   'Microservices architecture',
   'architect',           // Coordinator
   ['coder1', 'coder2']  // Workers
@@ -186,14 +186,14 @@ Custom MCP tools enable cross-agent data sharing:
 
 ```typescript
 // Agent 1: Store API design
-await swarm.memory.set('api-design', {
+await flow.memory.set('api-design', {
   endpoints: ['/users', '/auth'],
   database: 'postgresql'
 }, 3600); // TTL: 1 hour
 
 // Agent 2: Retrieve and implement
-const design = await swarm.memory.get('api-design');
-await swarm.execute({
+const design = await flow.memory.get('api-design');
+await flow.execute({
   task: `Implement these endpoints: ${JSON.stringify(design)}`,
   agents: ['coder']
 });
@@ -211,14 +211,14 @@ await swarm.execute({
 See agent output token-by-token as it's generated:
 
 ```bash
-opencode-swarm exec \
+opencode-flow exec \
   --task "Write documentation" \
   --agents coder \
   --stream
 ```
 
 ```typescript
-for await (const chunk of swarm.executeStream(task, agents)) {
+for await (const chunk of flow.executeStream(task, agents)) {
   console.log(chunk.agent, chunk.text);
 }
 ```
@@ -233,13 +233,13 @@ FROM node:20-alpine
 WORKDIR /app
 COPY . .
 RUN npm ci --production
-CMD ["opencode-swarm", "serve", "--port", "5000"]
+CMD ["opencode-flow", "serve", "--port", "5000"]
 ```
 
 ```bash
 docker run -p 5000:5000 \
   -e ANTHROPIC_API_KEY=$ANTHROPIC_API_KEY \
-  opencode-swarm:latest
+  opencode-flow:latest
 ```
 
 **Kubernetes:**
@@ -247,13 +247,13 @@ docker run -p 5000:5000 \
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: swarm-code-review
+  name: flow-code-review
 spec:
   template:
     spec:
       containers:
-      - name: swarm
-        image: opencode-swarm:latest
+      - name: flow
+        image: opencode-flow:latest
         args: ["exec", "--task", "Review PR #123", "--agents", "reviewer"]
         env:
         - name: ANTHROPIC_API_KEY
@@ -264,17 +264,17 @@ spec:
 
 ## Use Cases
 
-### 🔍 Code Review Swarm
+### 🔍 Code Review Flow
 
 ```typescript
-const reviewer = await swarm.spawn({
+const reviewer = await flow.spawn({
   name: 'reviewer',
   agent: 'plan',  // Read-only
   model: 'deepseek-r1',
   systemPrompt: 'Review code for security, performance, best practices'
 });
 
-const results = await swarm.execute({
+const results = await flow.execute({
   task: `Review this PR: ${prDiff}`,
   agents: ['reviewer'],
   optimize: 'cost'
@@ -285,32 +285,32 @@ const results = await swarm.execute({
 
 ---
 
-### 🏗️ API Generator Swarm
+### 🏗️ API Generator Flow
 
 ```typescript
 // Phase 1: Research
-const research = await swarm.execute({
+const research = await flow.execute({
   task: 'Research best practices for REST API authentication',
   agents: ['researcher'],
   optimize: 'cost'  // Uses Gemini 2.5 Flash
 });
 
 // Phase 2: Design
-await swarm.memory.set('research', research[0].output);
-const design = await swarm.execute({
+await flow.memory.set('research', research[0].output);
+const design = await flow.execute({
   task: 'Design API based on research',
   agents: ['architect']
 });
 
 // Phase 3: Implement
-const code = await swarm.execute({
+const code = await flow.execute({
   task: 'Implement API endpoints',
   agents: ['coder'],
   optimize: 'quality'  // Uses Claude Sonnet 4
 });
 
 // Phase 4: Test
-await swarm.execute({
+await flow.execute({
   task: 'Write comprehensive tests',
   agents: ['tester'],
   optimize: 'cost'
@@ -319,12 +319,12 @@ await swarm.execute({
 
 ---
 
-### 🛡️ Security Audit Swarm
+### 🛡️ Security Audit Flow
 
 ```typescript
 const agents = ['security-scanner', 'code-reviewer', 'dependency-checker'];
 
-const results = await swarm.executeParallel(
+const results = await flow.executeParallel(
   'Perform comprehensive security audit',
   agents
 );
@@ -349,7 +349,7 @@ console.log(`Found ${allFindings.length} issues`);
 
 ### ✅ Phase 1: MVP (Week 1-2)
 - [x] Project setup
-- [ ] SwarmClient wrapper
+- [ ] FlowClient wrapper
 - [ ] Agent spawning
 - [ ] Basic CLI
 - [ ] Parallel execution
@@ -368,7 +368,7 @@ console.log(`Found ${allFindings.length} issues`);
 ### 🚀 Phase 4: Production (Week 6-8)
 - [ ] Docker deployment
 - [ ] Kubernetes manifests
-- [ ] Example swarms
+- [ ] Example flows
 - [ ] Documentation & launch
 
 ---
@@ -385,11 +385,11 @@ console.log(`Found ${allFindings.length} issues`);
 
 ```bash
 # From npm (coming soon)
-npm install -g opencode-swarm
+npm install -g opencode-flow
 
 # From source
-git clone https://github.com/yourusername/opencode-swarm.git
-cd opencode-swarm
+git clone https://github.com/yourusername/opencode-flow.git
+cd opencode-flow
 npm install
 npm run build
 npm link
@@ -399,7 +399,7 @@ npm link
 
 ## Configuration
 
-**swarm.config.json:**
+**flow.config.json:**
 ```json
 {
   "serverUrl": "http://localhost:4096",
@@ -450,14 +450,14 @@ Built with:
 
 ## Support
 
-- **Issues:** [GitHub Issues](https://github.com/yourusername/opencode-swarm/issues)
-- **Discussions:** [GitHub Discussions](https://github.com/yourusername/opencode-swarm/discussions)
-- **Discord:** [Join our Discord](https://discord.gg/opencode-swarm)
+- **Issues:** [GitHub Issues](https://github.com/yourusername/opencode-flow/issues)
+- **Discussions:** [GitHub Discussions](https://github.com/yourusername/opencode-flow/discussions)
+- **Discord:** [Join our Discord](https://discord.gg/opencode-flow)
 
 ---
 
-**Deploy multi-agent swarms in seconds. Optimize costs automatically. Scale to production.** 🚀
+**Deploy multi-agent flows in seconds. Optimize costs automatically. Scale to production.** 🚀
 
 ```bash
-opencode-swarm exec --task "Your task here" --agents researcher,coder --optimize cost
+opencode-flow exec --task "Your task here" --agents researcher,coder --optimize cost
 ```
