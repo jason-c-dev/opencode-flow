@@ -134,13 +134,19 @@ Built-in intelligence:
 
 ### 📋 Phase 1: MVP (Week 1-2)
 - [ ] Project boilerplate
+- [ ] **Interactive setup wizard** (`opencode-flow setup`)
+  - [ ] OpenCode CLI detection/installation
+  - [ ] Server lifecycle management (start/stop/status)
+  - [ ] API key configuration wizard
+  - [ ] Health check validation
+  - [ ] `.env` file generation
 - [ ] FlowClient (OpenCode API wrapper)
 - [ ] Agent spawning
 - [ ] Basic CLI
 - [ ] Parallel execution
 - [ ] Unit tests
 
-**Deliverable:** Spawn 3+ agents, execute tasks in parallel
+**Deliverable:** Zero-config setup + spawn 3+ agents, execute tasks in parallel
 
 ### 📋 Phase 2: Model Router (Week 3)
 - [ ] Port agentic-flow optimizer

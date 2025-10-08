@@ -6,49 +6,74 @@ This guide will walk you through setting up and using OpenCode Flow for the firs
 
 ## Prerequisites
 
-1. **OpenCode installed and running**
-   ```bash
-   # Install OpenCode
-   npm install -g opencode-ai
-   
-   # Start OpenCode server
-   opencode serve --port 4096
-   ```
-
-2. **Node.js 20+**
-   ```bash
-   node --version  # Should be 20.x or higher
-   ```
-
-3. **API Keys** for your chosen LLM providers
-   - Anthropic Claude: https://console.anthropic.com/
-   - OpenAI: https://platform.openai.com/
-   - Google Gemini: https://ai.google.dev/
-   - OpenRouter: https://openrouter.ai/
+- **Node.js 20+** installed
+- **API key** for at least one LLM provider:
+  - Anthropic Claude (`ANTHROPIC_API_KEY`)
+  - OpenRouter (`OPENROUTER_API_KEY`) 
+  - Google Gemini (`GOOGLE_API_KEY`)
 
 ---
 
-## Installation
+## Installation & Setup
 
-### Option 1: npm (coming soon)
+### Recommended: Automatic Setup
+
+The easiest way to get started is using the interactive setup wizard:
+
 ```bash
+# Install
 npm install -g opencode-flow
+
+# Run setup wizard
+opencode-flow setup
 ```
 
-### Option 2: From source
+**What the wizard does:**
+
+1. **Checks for OpenCode CLI**
+   - Detects if `@opencode/cli` is installed
+   - Offers to install it via npm if missing
+   
+2. **Starts OpenCode Server**
+   - Checks if server is running on port 4096
+   - Starts it in background daemon mode if needed
+   - Validates server health with ping test
+
+3. **Configures API Keys**
+   - Interactive prompts for each provider
+   - Creates `~/.opencode-flow/.env` file
+   - Validates keys with test API call
+
+4. **Runs Validation**
+   - Spawns test agent
+   - Executes simple task
+   - Confirms full stack is working
+
+5. **Shows Next Steps**
+   - Example commands to try
+   - Links to documentation
+   - Troubleshooting tips
+
+### Manual Setup (Advanced)
+
+If you prefer manual control:
+
 ```bash
-# Clone repository
-git clone https://github.com/yourusername/opencode-flow.git
-cd opencode-flow
+# 1. Install OpenCode CLI
+npm install -g @opencode/cli
 
-# Install dependencies
-npm install
+# 2. Start server (Terminal 1)
+opencode serve --port 4096
 
-# Build
-npm run build
+# 3. Install Flow (Terminal 2)
+npm install -g opencode-flow
 
-# Link globally
-npm link
+# 4. Configure
+echo "ANTHROPIC_API_KEY=sk-ant-..." > ~/.opencode-flow/.env
+echo "OPENCODE_SERVER_URL=http://localhost:4096" >> ~/.opencode-flow/.env
+
+# 5. Validate
+opencode-flow --agent researcher --task "Test setup"
 ```
 
 ---

@@ -10,12 +10,62 @@ Transform OpenCode from a single-agent TUI into a programmable flow platform wit
 
 ---
 
+## Prerequisites
+
+Before using OpenCode Flow, you need:
+
+1. **Node.js 20+** - [Download](https://nodejs.org/)
+2. **At least one LLM provider API key:**
+   - [Anthropic Claude](https://console.anthropic.com/) (recommended)
+   - [OpenRouter](https://openrouter.ai/) (100+ models, cheaper)
+   - [Google Gemini](https://ai.google.dev/)
+
+**Don't have OpenCode yet?** No problem! The setup wizard will install it for you.
+
+---
+
 ## Quick Start
 
+### Option 1: Automatic Setup (Recommended)
+
 ```bash
-# Install
+# Install OpenCode Flow
 npm install -g opencode-flow
 
+# Run interactive setup wizard
+opencode-flow setup
+
+# The wizard will:
+# ✓ Install OpenCode CLI (if needed)
+# ✓ Start OpenCode server
+# ✓ Configure your API keys
+# ✓ Validate everything works
+# ✓ Run a test agent
+```
+
+### Option 2: Manual Setup
+
+```bash
+# 1. Install OpenCode CLI
+npm install -g @opencode/cli
+
+# 2. Start OpenCode server (keep this running in Terminal 1)
+opencode serve --port 4096
+
+# 3. In Terminal 2: Install OpenCode Flow
+npm install -g opencode-flow
+
+# 4. Configure environment
+export ANTHROPIC_API_KEY=sk-ant-...
+export OPENCODE_SERVER_URL=http://localhost:4096
+
+# 5. Run your first flow
+opencode-flow --agent researcher --task "Analyze microservices architecture"
+```
+
+### Your First Multi-Agent Flow
+
+```bash
 # Spawn agents
 opencode-flow spawn --name researcher --agent general --model gemini-2.5-flash
 opencode-flow spawn --name coder --agent build --model claude-sonnet-4
@@ -25,9 +75,9 @@ opencode-flow exec \
   --task "Build a REST API with authentication" \
   --agents researcher,coder \
   --mode sequential
-
-# Or use programmatically
 ```
+
+### Programmatic Usage
 
 ```typescript
 import { OpencodeFlow } from 'opencode-flow';
@@ -373,27 +423,9 @@ console.log(`Found ${allFindings.length} issues`);
 
 ---
 
-## Requirements
-
-- **OpenCode** - Running server (`opencode serve`)
-- **Node.js** - 20+
-- **API Keys** - For your chosen providers (Anthropic, OpenAI, etc.)
-
----
-
 ## Installation
 
-```bash
-# From npm (coming soon)
-npm install -g opencode-flow
-
-# From source
-git clone https://github.com/yourusername/opencode-flow.git
-cd opencode-flow
-npm install
-npm run build
-npm link
-```
+See [Quick Start](#quick-start) above for installation instructions.
 
 ---
 

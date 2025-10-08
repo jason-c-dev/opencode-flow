@@ -17,6 +17,38 @@
 
 ---
 
+## 🚀 Getting Started (Zero to Flow in 2 Minutes)
+
+### Step 1: Run Setup Wizard
+
+```bash
+npm install -g opencode-flow
+opencode-flow setup
+```
+
+The interactive wizard will:
+- ✓ Check for OpenCode CLI (install if missing)
+- ✓ Start OpenCode server in background
+- ✓ Guide you through API key configuration
+- ✓ Validate setup with test agent
+- ✓ Show you example commands
+
+### Step 2: Run Your First Flow
+
+```bash
+opencode-flow --agent researcher --task "Analyze REST API design patterns"
+```
+
+### Step 3: Try Multi-Agent Coordination
+
+```bash
+opencode-flow --agents researcher,coder --task "Build authentication system" --mode sequential
+```
+
+That's it! You're ready to orchestrate multi-agent flows.
+
+---
+
 ## 📁 Project Status
 
 **Phase:** Planning Complete ✅  
@@ -34,6 +66,7 @@
 
 ### What's Next
 
+- 📋 Implement interactive setup wizard (Week 1)
 - 📋 Implement `FlowClient` (Week 1)
 - 📋 Implement `AgentManager` (Week 1)
 - 📋 Implement basic CLI (Week 1)

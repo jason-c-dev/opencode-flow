@@ -40,6 +40,12 @@ A lightweight TypeScript wrapper that:
 
 ### Goals
 ✅ **Phase 1 (MVP - Week 1-2)**
+- **Interactive setup wizard** - `opencode-flow setup` command
+  - Auto-detect/install OpenCode CLI
+  - Start OpenCode server (background daemon)
+  - Configure API keys interactively
+  - Validate configuration with test agent
+  - Zero-config onboarding experience
 - Spawn multiple OpenCode sessions programmatically
 - Configure per-agent models, prompts, tools
 - Basic parallel execution

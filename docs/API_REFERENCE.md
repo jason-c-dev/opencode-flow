@@ -16,6 +16,54 @@
 
 ## CLI API
 
+### `opencode-flow setup`
+
+Interactive setup wizard for first-time configuration.
+
+```bash
+opencode-flow setup [options]
+```
+
+**Options:**
+- `--skip-opencode-install` - Skip OpenCode CLI installation check
+- `--skip-server-start` - Skip starting OpenCode server
+- `--port <number>` - Custom OpenCode server port (default: 4096)
+- `--config-path <path>` - Custom config directory (default: ~/.opencode-flow)
+- `--non-interactive` - Use environment variables, no prompts
+
+**Examples:**
+```bash
+# Full interactive setup
+opencode-flow setup
+
+# Skip server management (if already running)
+opencode-flow setup --skip-server-start
+
+# Custom configuration
+opencode-flow setup --port 8080 --config-path ./config
+```
+
+**What it does:**
+1. Validates Node.js version (requires 20+)
+2. Checks for OpenCode CLI installation
+3. Verifies/starts OpenCode server
+4. Configures API keys interactively
+5. Creates `.env` configuration file
+6. Runs health check with test agent
+7. Displays success message and next steps
+
+**Environment Variables (Non-Interactive Mode):**
+```bash
+export ANTHROPIC_API_KEY=sk-ant-...
+export OPENROUTER_API_KEY=sk-or-v1-...
+export GOOGLE_API_KEY=...
+export OPENCODE_SERVER_URL=http://localhost:4096
+
+opencode-flow setup --non-interactive
+```
+
+---
+
 ### `opencode-flow spawn`
 
 Spawn a new agent instance.
